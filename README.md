@@ -6,7 +6,7 @@ Before getting start with our project, please follow instructions below:
 ```shell
 git pull
 git checkout -b [name_of_your_new_branch]
-git push origin [name_of_your_new_branch] # Push the branch on github
+git push git push --set-upstream origin [name_of_your_new_branch] # Push the branch on github
 ```
 
 
