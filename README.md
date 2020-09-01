@@ -5,7 +5,7 @@ Please do remember to switch to your branch. Create and push your new branch
 ```shell
 git pull
 git checkout -b [name_of_your_new_branch]
-git push git push --set-upstream origin [name_of_your_new_branch] # Push the branch on github
+git push --set-upstream origin [name_of_your_new_branch] # Push the branch on github
 ```
 
 
