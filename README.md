@@ -18,7 +18,7 @@ source env/bin/activate or env/bin/activate (for Windows users)
 
 # Event Registration System Backend
 ```shell
-cd path\to\backend/src
+cd path/to/backend/src
 python manage.py migrate
 python manage.py test
 python manage.py runserver
@@ -31,7 +31,7 @@ sudo npm install -g create-react-app (Mac/Linux users) or npm install -g create-
 
 # For Event Registration System UI
 ```shell
-cd path\to\eventui
+cd path/to/eventui
 npm install
 ```
 
