@@ -2,7 +2,7 @@
 Before getting start with our project, please follow instructions below:
 
 # Please do remember to switch to your branch
-# Create and push your new branch
+Create and push your new branch
 ```shell
 git pull
 git checkout -b [name_of_your_new_branch]
