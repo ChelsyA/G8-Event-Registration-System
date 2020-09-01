@@ -20,12 +20,12 @@ __pycache__/
 
 # npm
 node_modules/
-/frontend/node_modules/
+/eventui/node_modules/
 npm-debug.log
 
 # Webpack
-/frontend/bundles/*
-/frontend/webpack_bundles/*
+/eventui/bundles/*
+/eventui/webpack_bundles/*
 /webpack-stats.json
 /jquery-webpack-stats.json
 
