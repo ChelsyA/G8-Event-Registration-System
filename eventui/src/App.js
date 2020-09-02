@@ -1,12 +1,14 @@
 import React from 'react';
 import './App.css';
-import Beverage from './components/Beverage';
 import Auxiliary from './hoc/Auxiliary';
+import Navbar from './components/Navbar/Navbar';
+import FormPanel from './components/Form/Form';
 
 function App() {
   return (
     <Auxiliary>
-      <Beverage />
+      <Navbar />
+      <FormPanel/>
     </Auxiliary>
   );
 }
