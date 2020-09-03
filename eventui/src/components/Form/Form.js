@@ -8,7 +8,7 @@ const FormPanel = (props) => {
 
   return (
     <Auxiliary>
-        {props.isLogin ? <Login islogin={props.isLogin} /> : <Register isregister={props.isLogin} /> }
+        {props.isLogin ? <Login islogin={props.isLogin} submitLogin={props.onLogin} /> : <Register isregister={props.isLogin} submitRegister={props.onRegister} /> }
     </Auxiliary>
   );
 };

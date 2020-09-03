@@ -1,10 +1,7 @@
 .panel {
     background: #FAFAFA;
     box-shadow: 0 2px 3px 3px #235a7d56;
-<<<<<<< HEAD
     border-top: 4px solid #0069D9;
-=======
->>>>>>> Development
 }
 
 .link, .link:hover {
@@ -25,4 +22,8 @@
 
 .header {
     box-shadow: 0 2px 3px 3px #235a7d18;
+}
+
+.require {
+    color: red;
 }
