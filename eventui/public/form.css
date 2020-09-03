@@ -1,3 +1,33 @@
+<<<<<<< HEAD
+.panel {
+    background: #FAFAFA;
+    box-shadow: 0 2px 3px 3px #235a7d56;
+    border-top: 4px solid #0069D9;
+}
+
+.link, .link:hover {
+    text-decoration: none;
+}
+
+.formTitle {
+    font-size: 1.8rem;
+}
+
+.borderRadius {
+    border-radius: 20px;
+}
+
+.inputBG {
+    background: #E2E2E2;
+}
+
+.header {
+    box-shadow: 0 2px 3px 3px #235a7d18;
+}
+
+.require {
+    color: red;
+=======
 .panel {
     background: #FAFAFA;
     box-shadow: 0 2px 3px 3px #235a7d56;
@@ -21,4 +51,5 @@
 
 .header {
     box-shadow: 0 2px 3px 3px #235a7d18;
+>>>>>>> master
 }
