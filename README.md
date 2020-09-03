@@ -1,12 +1,11 @@
 # G8-Event-Registration-System
 Before getting start with our project, please follow instructions below:
 
-# Please do remember to switch to your branch
-# Create and push your new branch
+Please do remember to switch to your branch. Create and push your new branch
 ```shell
 git pull
 git checkout -b [name_of_your_new_branch]
-git push git push --set-upstream origin [name_of_your_new_branch] # Push the branch on github
+git push --set-upstream origin [name_of_your_new_branch] # Push the branch on github
 ```
 
 
@@ -18,7 +17,7 @@ source env/bin/activate or env/bin/activate (for Windows users)
 
 # Event Registration System Backend
 ```shell
-cd path\to\backend/src
+cd path/to/backend/src
 python manage.py migrate
 python manage.py test
 python manage.py runserver
@@ -31,7 +30,7 @@ sudo npm install -g create-react-app (Mac/Linux users) or npm install -g create-
 
 # For Event Registration System UI
 ```shell
-cd path\to\eventui
+cd path/to/eventui
 npm install
 ```
 
