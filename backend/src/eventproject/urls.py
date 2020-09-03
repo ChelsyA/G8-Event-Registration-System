@@ -19,9 +19,9 @@ from django.urls import path, include
 from rest_framework import routers
 from eventapp import views
 
-router = routers.DefaultRouter()
-router.register(r'eventapps', views.EventappView, 'eventapp')
 
 urlpatterns = [
-    path('admin/', admin.site.urls), path('api/', include(router.urls))
+    path('admin/', admin.site.urls),
+    path('', include("eventapp.urls")), 
+    # path('api/', include(router.urls))
 ]
