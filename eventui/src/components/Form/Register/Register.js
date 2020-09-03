@@ -2,7 +2,10 @@ import React from "react";
 import Auxiliary from "../../../hoc/Auxiliary";
 
 const FormPanel = (props) => {
+<<<<<<< HEAD
+=======
   console.log(props.isregister);
+>>>>>>> Development
   return (
     <Auxiliary>
       <div className="col-md-9 col-sm-12 col-xs-12 mx-auto panel">
@@ -25,7 +28,11 @@ const FormPanel = (props) => {
               <input
                 type="text"
                 className="form-control inputBG"
+<<<<<<< HEAD
+                id="last_name"
+=======
                 id="first_name"
+>>>>>>> Development
                 placeholder="Last Name"
               />
             </div>
