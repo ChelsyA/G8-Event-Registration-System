@@ -1,18 +1,17 @@
 # G8-Event-Registration-System
 Before getting start with our project, please follow instructions below:
 
+## Installation
+First, clone the repo:
+```shell
+git clone https://github.com/ChelsyA/G8-Event-Registration-System.git
+```
+
 Please do remember to switch to your branch. Create and push your new branch
 ```shell
 git pull
 git checkout -b [name_of_your_new_branch]
 git push --set-upstream origin [name_of_your_new_branch] # Push the branch on github
-```
-
-
-```shell
-pip3 install virtualenv or pip install virtualenv (for Windows users)
-virtualenv env
-source env/bin/activate or env/bin/activate (for Windows users)
 ```
 
 # Event Registration System Backend
@@ -47,6 +46,40 @@ npm start
 # Build for production
 ```shell
 npm run-script build
+```
+
+
+# Backend App 
+
+Django Rest API with JSON web token(JWT) authentication (Knox, djoser and django rest jwt).
+
+## Usage
+
+```shell
+cd backend
+```
+
+```shell
+pip3 install virtualenv or pip install virtualenv (for Windows users)
+virtualenv env
+source env/bin/activate 
+```
+
+Install all the packages from requirements.txt
+
+```shell
+pip3 or python install requirements.txt
+```
+
+Migrate
+
+```shell
+python3 or python manage.py migrate
+```
+
+Start the app
+```shell
+python3 or python manage.py runserver
 ```
 
 Created by G8 Teams We love :coffee: :pizza:, and :dancer:
