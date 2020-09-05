@@ -1,26 +1,18 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
-class User(models.Model):
-    first_name = models.CharField(max_length=30, null=False)
-    last_name = models.CharField(max_length=30, null=False)
-    user_name = models.CharField(max_length=30, null=False)
-    email = models.EmailField(max_length=30, null=False)
-    password = models.CharField(max_length=30, null=False)
-    confirm_password = models.CharField(max_length=30, null=False)
-    address = models.CharField(max_length=50, null=True)
-    phone_number = PhoneNumberField()
-    city = models.CharField(max_length = 30)
-    
+class User(AbstractUser):
+    address = models.TextField(blank=True)
+    city = models.CharField(max_length=200, blank=True)
+    phone_number = PhoneNumberField(blank=True)
     
     def __str__(self):
-        return self.first_name
+        return self.username
 
-class Register(models.Model):
-    user_name = models.EmailField(max_length=30, null=False)
-    email = models.CharField(max_length=30)
-    password = models.CharField(max_length=50)
-
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
     def __str__(self):
-        return self.email
+        return self.user.username
