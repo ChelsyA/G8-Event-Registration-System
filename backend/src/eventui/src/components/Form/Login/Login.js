@@ -1,22 +1,42 @@
-import React, { useState } from "react";
+import React from "react";
 import Auxiliary from "../../../hoc/Auxiliary";
+import * as action from '../../../store/auth';
+import axios from 'axios';
+import * as consts from '../../../store/constants'
+import * as details from '../../../store/details';
 
 const Login = (props) => {
-  
-  const { state, setState } = useState({
-    email: "",
-    password: "",
-  });
+
+  const data = {
+    ...details.loginDetail
+  }
 
   const submit = (event) => {
     event.persist();
     event.preventDefault();
-    console.log(props.submitLogin);
+    axios
+      .post(`${consts.DJ_AUTH_URL}login\\`, data)
+      .then(res => {
+        if (res.status === 200) {
+          const user = {
+            token: res.data.key,
+            username: data.username,
+            expire: new Date(new Date().getTime() + 3600 * 1000)
+          };
+          props.submitLogin(user)
+          localStorage.setItem("user", JSON.stringify(user));
+          action.checkAuthTimeout(3600);
+        }
+      })
+      .catch(err => {
+        alert('error happen')
+        action.authFail(err);
+      });
   };
 
   const onChangeHandler = (event) => {
     const { id, value } = event.target;
-    console.log(id + " " + value);
+    data[id] = value;
   };
 
   return (
@@ -27,15 +47,15 @@ const Login = (props) => {
         </div>
         <form method="POST" className="p-1">
           <div className="form-group">
-            <label htmlFor="email">Email address <span className="require">*</span></label>
+            <label htmlFor="username">Username <span className="require">*</span></label>
             <input
-              type="email"
+              type="username"
               className="form-control inputBG"
-              id="email"
-              aria-describedby="emailHelp"
-              placeholder="Email"
+              id="username"
+              aria-describedby="usernameHelp"
+              placeholder="Username"
               onChange={(event) => onChangeHandler(event)}
-              required
+              required={true}
             />
             {/* <small id="emailHelp" className="form-text text-muted">
               We'll never share your email with anyone else.

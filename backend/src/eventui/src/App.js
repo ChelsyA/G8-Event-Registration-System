@@ -3,6 +3,7 @@ import './App.css';
 import Auxiliary from './hoc/Auxiliary';
 import Navbar from './components/Navbar/Navbar';
 import FormPanel from './components/Form/Form';
+import { authCheckState } from './store/auth';
 
 class App extends Component {
   state = {
@@ -10,16 +11,25 @@ class App extends Component {
     isAuthenticated: false,
   }
 
+  componentWillMount() {
+    console.log(authCheckState())
+  }
+
   setSwitchForm = (isloginform) => {
     this.setState({isLoginForm: isloginform});
   }
 
-  onSubmitLogin = () => {
-    console.log('Onlogin')
+  onSubmitLogin = (result) => {
+    if(result) {
+      this.setState({isAuthenticated: true})
+    }
   }
 
-  onSubmitRegister = () => {
-    console.log('Onlogin')
+  onSubmitRegister = (result) => {
+    console.log(result)
+    if(result.is_success) {
+      this.setState({isLoginForm: result.is_success})
+    }
   }
 
   render() {

@@ -1,8 +1,37 @@
 import React from "react";
 import Auxiliary from "../../../hoc/Auxiliary";
+import axios from 'axios';
+import * as consts from '../../../store/constants'
+import * as details from '../../../store/details';
 
 const Register = (props) => {
-  console.log(props.submitRegister);
+  const data = {
+    ...details.registerDetail
+  }
+
+  const submit = (event) => {
+    event.persist();
+    event.preventDefault();
+    axios
+      .post(`${consts.EVENTAPP_URL}register`, data)
+      .then(res => {
+        if (res.status === 200) {
+          props.submitRegister(res.data)
+        }
+      })
+      .catch(err => {
+        alert('error happen')
+        console.log(err)
+      });
+  };
+
+  const onChangeHandler = (event) => {
+    const { id, value } = event.target;
+    data[id] = value;
+    console.log(value)
+  };
+
+
   return (
     <Auxiliary>
       <div className="col-md-9 col-sm-12 col-xs-12 mx-auto panel">
@@ -18,6 +47,7 @@ const Register = (props) => {
                 className="form-control inputBG"
                 id="first_name"
                 placeholder="First Name"
+                onChange={(event) => onChangeHandler(event)}
               />
             </div>
             <div className="form-group col-md-6">
@@ -27,6 +57,7 @@ const Register = (props) => {
                 className="form-control inputBG"
                 id="last_name"
                 placeholder="Last Name"
+                onChange={(event) => onChangeHandler(event)}
               />
             </div>
           </div>
@@ -38,15 +69,17 @@ const Register = (props) => {
                 className="form-control inputBG"
                 id="email"
                 placeholder="Email Address"
+                onChange={(event) => onChangeHandler(event)}
               />
             </div>
             <div className="form-group col-md-6">
-              <label htmlFor="address">Address <span className="require">*</span></label>
+              <label htmlFor="username">Username <span className="require">*</span></label>
               <input
                 type="text"
                 className="form-control inputBG"
-                id="address"
-                placeholder="Address"
+                id="username"
+                placeholder="Username"
+                onChange={(event) => onChangeHandler(event)}
               />
             </div>
           </div>
@@ -58,6 +91,7 @@ const Register = (props) => {
                 className="form-control inputBG"
                 id="password"
                 placeholder="Password"
+                onChange={(event) => onChangeHandler(event)}
               />
             </div>
             <div className="form-group col-md-6">
@@ -65,8 +99,9 @@ const Register = (props) => {
               <input
                 type="password"
                 className="form-control inputBG"
-                id="confirm_password"
+                id="password2"
                 placeholder="Confirm Password"
+                onChange={(event) => onChangeHandler(event)}
               />
             </div>
           </div>
@@ -78,11 +113,12 @@ const Register = (props) => {
                 className="form-control inputBG"
                 id="phone_number"
                 placeholder="Phone Number"
+                onChange={(event) => onChangeHandler(event)}
               />
             </div>
             <div className="form-group col-md-6">
               <label htmlFor="city">City <span className="require">*</span></label>
-              <select id="city" className="form-control inputBG">
+              <select id="city" className="form-control inputBG" onChange={(event) => onChangeHandler(event)}>
                 <option defaultValue>Choose...</option>
                 <option>Akosombo</option>
                 <option>Aburi</option>
@@ -92,6 +128,16 @@ const Register = (props) => {
                 <option>Tamale</option>
                 <option>Hohoe</option>
               </select>
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="address">Address <span className="require">*</span></label>
+              <input
+                type="text"
+                className="form-control inputBG"
+                id="address"
+                placeholder="Address"
+                onChange={(event) => onChangeHandler(event)}
+              />
             </div>
           </div>
           <div className="form-group">
@@ -108,7 +154,9 @@ const Register = (props) => {
             </div>
           </div>
           <div className="text-center">
-            <button type="submit" className="btn btn-primary borderRadius px-5">
+            <button type="submit"
+              onClick={(event) => submit(event)}
+              className="btn btn-primary borderRadius px-5">
               Create Account
             </button>
           </div>
