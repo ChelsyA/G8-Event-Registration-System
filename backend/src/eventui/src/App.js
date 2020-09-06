@@ -11,8 +11,8 @@ class App extends Component {
     isAuthenticated: false,
   }
 
-  componentWillMount() {
-    console.log(authCheckState())
+  componentDidMount() {
+    authCheckState()
   }
 
   setSwitchForm = (isloginform) => {

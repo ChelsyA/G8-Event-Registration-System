@@ -1,11 +1,16 @@
 import axios from "axios";
-import * as actionTypes from './constants';
+import * as consts from './constants';
 
 export const logout = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  axios.post(`${consts.DJ_AUTH_URL}login\\`, {}, {
+    headers: { 'TOKEN ': + user.token }
+  }).then(function(response) {
+    console.log('Authenticated');
+  }).catch(function(error) {
+    console.log('Error on Authentication');
+  });
   localStorage.removeItem("user");
-  return {
-    type: actionTypes.AUTH_LOGOUT
-  };
 };
 
 export const checkAuthTimeout = expirationTime => {
@@ -18,58 +23,15 @@ export const checkAuthTimeout = expirationTime => {
 
 export const authSuccess = user => {
   return {
-    type: actionTypes.AUTH_SUCCESS,
+    type: consts.AUTH_SUCCESS,
     user
   };
 };
 
 export const authFail = error => {
   return {
-    type: actionTypes.AUTH_FAIL,
+    type: consts.AUTH_FAIL,
     error: error
-  };
-};
-
-export const authLogin = (username, password) => {
-  return dispatch => {
-    axios
-      .post(`${actionTypes.DJ_AUTH_URL}login\\`, {
-        username: username,
-        password: password
-      })
-      .then(res => {
-        const user = {
-          token: res.data.key,
-          username,
-          expirationDate: new Date(new Date().getTime() + 3600 * 1000)
-        };
-        localStorage.setItem("user", JSON.stringify(user));
-        dispatch(authSuccess(user));
-        dispatch(checkAuthTimeout(3600));
-      })
-      .catch(err => {
-        dispatch(authFail(err));
-      });
-  };
-};
-
-export const authSignup = (
-  data
-) => {
-  return dispatch => {
-    axios
-      .post(`${actionTypes.EVENTAPP_URL}register\\`, data)
-      .then(res => {
-        const user = {
-          email: res.data.email,
-          username: res.data.username,
-          userId: res.data.userId,
-        };
-        dispatch(authSuccess(user));
-      })
-      .catch(err => {
-        dispatch(authFail(err));
-      });
   };
 };
 
