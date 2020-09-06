@@ -1,23 +1,24 @@
-import React,{ useState } from "react";
+import React from "react";
 import Auxiliary from "../../../hoc/Auxiliary";
 import axios from 'axios';
 import * as consts from '../../../store/constants'
 import * as details from '../../../store/details';
-import { Toast, notify } from "../../libpac/notify";
+import { Toast, notify } from "../../Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = (props) => {
-  let [isValid, setValid] = useState(false);
+  let isValid = false;
+  let isSubmit = false;
   const data = {
     ...details.loginDetail
   }
 
   const submit = (event) => {
+    isSubmit = true;
     event.persist();
     event.preventDefault();
     validate(["username","password"]);
     if(isValid) {
-      console.log(data)
       axios
       .post(`${consts.DJ_AUTH_URL}login\\`, data)
       .then(res => {
@@ -25,17 +26,19 @@ const Login = (props) => {
           const user = {
             token: res.data.key,
             username: data.username,
-            expire: new Date(new Date().getTime() + 3600 * 1000)
+            expireDate: new Date(new Date().getTime() + 3600 * 1000)
           };
           props.submitLogin(user)
           localStorage.setItem("user", JSON.stringify(user));
-          notify(
-            "Logged in successfully",
-            "success"
-          );
         }
       })
       .catch(err => {
+        isSubmit = false;
+        notify(
+          "Incorrect credientals!",
+          "error",
+          "top-center"
+        );
         return;
       });
     }
@@ -44,16 +47,18 @@ const Login = (props) => {
   const validate = (ids) => {
     ids.forEach(id => {
       if(data[id] === "") {
-        const splitId = id.split("_").join(" ");
-        notify(
-          `Please ${id === "password2" ? "confirm password" : splitId} field is required!`,
-          "error"
-        );
-        return;
+        isValid = false;
+        isSubmit = false;
+        if(!isSubmit) {
+          const splitId = id.split("_").join(" ");
+          notify(
+            `Please ${id === "password2" ? "confirm password" : splitId} field is required!`,
+            "error"
+          );
+        }
       }
       else {
-        console.log(data[id])
-        setValid(true)
+        isValid = true;
       }
     });
   };
@@ -97,18 +102,18 @@ const Login = (props) => {
           <button
             // disabled={isDisabled}
             onClick={(event) => submit(event)}
-            className="btn btn-primary btn-block rounded-pill"
+            className="btn btn-primary btn-block rounded-pill my-4"
           >
-            Submit
+            LOGIN
           </button>
-          <div className="mt-3 text-center">
+          {/* <div className="mt-3 text-center">
             <p>
               Don't have an account?{" "}
               <a href="#/" className="link">
                 Sign up!
               </a>
             </p>
-          </div>
+          </div> */}
         </form>
       </div>
     </Auxiliary>

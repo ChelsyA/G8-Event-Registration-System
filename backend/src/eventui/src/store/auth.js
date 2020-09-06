@@ -55,3 +55,13 @@ export const authCheckState = () => {
     }
   };
 };
+
+export const checkExpiredDate = () => {
+  let isExpired = false;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const expireDate = new Date(user.expireDate);
+  const expireTime = (expireDate.getTime() - new Date().getTime()) / 1000;
+  setTimeout(() => {
+    // set isauthenticated
+  }, expireTime * 1000);
+}

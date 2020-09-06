@@ -1,86 +1,125 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Toast, notify } from "../../libpac/notify";
+import { Toast, notify } from "../../Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Auxiliary from "../../../hoc/Auxiliary";
 import * as consts from "../../../store/constants";
 import * as details from "../../../store/details";
 import countrycodes from "../../../store/countrycodes";
+// import { WaveLoading } from 'react-loadingg';
+// import { Backdrop } from '../../Helper/Backdrop';
 
 const Register = (props) => {
-  const data = {
-    ...details.registerDetail,
-  };
+  const [userDetail, setUserDetail] = useState({ ...details.registerDetail });
 
+  // let [isLoading, setLoading] = useState(false);
   let [isDisabled, setDisabled] = useState(true);
-  let [isCheck, setChecked] = useState(false);
+  let isValid = false;
+  let isCheck = false;
   let isSubmit = false;
 
   const submit = (event) => {
     isSubmit = true;
     event.persist();
     event.preventDefault();
-    data.phone_number = data.code + data.phone_number;
+    console.log(userDetail);
+    validate([
+      "first_name",
+      "last_name",
+      "username",
+      "email",
+      "password",
+      "password2",
+    ]);
     
-    validate(["first_name", "last_name", "email", "password", "password2"]);
+    if (!emailValid(userDetail.email)) {
+      notify("Invaild email! Please enter a valid email.", "error");
+      return;
+    }
+    if (!matchPassword(userDetail.password, userDetail.password2,)) {
+      notify("Both password must match!", "error");
+      return;
+    }
+    
+    userDetail.phone_number = userDetail.code + userDetail.phone_number;
+    if (validPhoneNumber(userDetail.code, userDetail.phone_number)) {
+      notify(
+        "Phone number is not valid!",
+        "error"
+      );
+      return;
+    }
 
     if (isCheck) {
-      console.log(isCheck)
       notify(
         "Please accept our terms and conditions before proceeding!",
         "error"
       );
       return;
-    }else {
-      console.log(isCheck)
+    } else {
+      if (isValid) {
+        // setLoading(true);
+        axios
+          .post(`${consts.EVENTAPP_URL}register`, userDetail,)
+          .then((res) => {
+            if (res.status === 200) {
+              props.submitRegister(res.data);
+            }
+          })
+          .catch((err) => {
+            notify(
+              "Oops something go wrong! Please check to ensure all required fields are entered",
+              "error"
+            );
+            return;
+          });
+      }
     }
-
-    axios
-      .post(`${consts.EVENTAPP_URL}register`, data)
-      .then(res => {
-        if (res.status === 200) {
-          props.submitRegister(res.data)
-          notify(
-            "Registered successfully!",
-            "success"
-          );
-        }
-      })
-      .catch(err => {
-        notify(
-          "Oops something go wrong! Please check to ensure all required fields are entered",
-          "error"
-        );
-        return;
-      });
   };
 
+  const emailValid = (e) => e.includes("@") && e.includes(".");
+
+  const validPhoneNumber = (code, ph) => {
+    let invalid = false;
+    if(code !== "" && ph === "") {
+      invalid = true;
+    }
+    else if (ph !== "" && code === "") {
+      invalid = true;
+    }
+    else {
+      invalid = false;
+    }
+    return invalid;
+  }
+
   const validate = (ids) => {
-    ids.forEach(id => {
-      if(data[id] === "") {
+    ids.forEach((id) => {
+      if (userDetail[id] === "") {
+        isValid = false;
+        isSubmit = false;
         const splitId = id.split("_").join(" ");
-        if(isSubmit){
+        if (isSubmit === false) {
           notify(
-            `Please ${id === "password2" ? "confirm password" : splitId} field is required!`,
+            `Please ${
+              id === "password2" ? "confirm password" : splitId
+            } field is required!`,
             "error"
           );
         }
-        return;
-      } 
+      } else {
+        isValid = true;
+      }
     });
   };
 
-  const onChangeHandler = (event) => {
-    const { id, value } = event.target;
-    data[id] = value;
-    // validate(["first_name", "last_name", "email", "password", "password2"]);
-  };
+  const matchPassword = (p1, p2) => p1 === p2;
 
   const isChecked = (event) => {
     event.persist();
-    setChecked(event.target.checked);
-    setDisabled(event.target.checked);
+    isCheck = event.target.checked;
+    setDisabled(!event.target.checked);
   };
 
   const options = countrycodes.map((option, i) => {
@@ -93,12 +132,12 @@ const Register = (props) => {
 
   return (
     <Auxiliary>
-      {<Toast/>}
+      {<Toast />}
       <div className="col-md-9 col-sm-12 col-xs-12 mx-auto panel">
         <div className="text-center pt-3">
           <h3 className="form-title font-weight-bold">Registration</h3>
         </div>
-        <form className="p-2" method="POST">
+        <form className="p-2" method="POST" autoComplete="off">
           <div className="form-row">
             <div className="form-group col-md-6">
               <label htmlFor="first_name">
@@ -109,7 +148,13 @@ const Register = (props) => {
                 className="form-control inputBG"
                 id="first_name"
                 placeholder="First Name"
-                onChange={(event) => onChangeHandler(event)}
+                name="first_name"
+                onChange={(event) =>
+                  setUserDetail({
+                    ...userDetail,
+                    [event.target.name]: event.target.value,
+                  })
+                }
               />
             </div>
             <div className="form-group col-md-6">
@@ -121,7 +166,13 @@ const Register = (props) => {
                 className="form-control inputBG"
                 id="last_name"
                 placeholder="Last Name"
-                onChange={(event) => onChangeHandler(event)}
+                name="last_name"
+                onChange={(event) =>
+                  setUserDetail({
+                    ...userDetail,
+                    [event.target.name]: event.target.value,
+                  })
+                }
               />
             </div>
           </div>
@@ -135,7 +186,13 @@ const Register = (props) => {
                 className="form-control inputBG"
                 id="email"
                 placeholder="Email Address"
-                onChange={(event) => onChangeHandler(event)}
+                name="email"
+                onChange={(event) =>
+                  setUserDetail({
+                    ...userDetail,
+                    [event.target.name]: event.target.value,
+                  })
+                }
               />
             </div>
             <div className="form-group col-md-6">
@@ -147,7 +204,13 @@ const Register = (props) => {
                 className="form-control inputBG"
                 id="username"
                 placeholder="Username"
-                onChange={(event) => onChangeHandler(event)}
+                name="username"
+                onChange={(event) =>
+                  setUserDetail({
+                    ...userDetail,
+                    [event.target.name]: event.target.value,
+                  })
+                }
               />
             </div>
           </div>
@@ -161,7 +224,13 @@ const Register = (props) => {
                 className="form-control inputBG"
                 id="password"
                 placeholder="Password"
-                onChange={(event) => onChangeHandler(event)}
+                name="password"
+                onChange={(event) =>
+                  setUserDetail({
+                    ...userDetail,
+                    [event.target.name]: event.target.value,
+                  })
+                }
               />
             </div>
             <div className="form-group col-md-6">
@@ -173,7 +242,13 @@ const Register = (props) => {
                 className="form-control inputBG"
                 id="password2"
                 placeholder="Confirm Password"
-                onChange={(event) => onChangeHandler(event)}
+                name="password2"
+                onChange={(event) =>
+                  setUserDetail({
+                    ...userDetail,
+                    [event.target.name]: event.target.value,
+                  })
+                }
               />
             </div>
           </div>
@@ -184,7 +259,13 @@ const Register = (props) => {
                 <select
                   id="code"
                   className="form-control inputBG"
-                  onChange={(event) => onChangeHandler(event)}
+                  name="code"
+                  onChange={(event) =>
+                    setUserDetail({
+                      ...userDetail,
+                      [event.target.name]: event.target.value,
+                    })
+                  }
                 >
                   <option defaultValue>Code</option>
                   {options}
@@ -194,7 +275,13 @@ const Register = (props) => {
                   className="form-control inputBG w-25"
                   id="phone_number"
                   placeholder="Phone # eg 551396690"
-                  onChange={(event) => onChangeHandler(event)}
+                  name="phone_number"
+                  onChange={(event) =>
+                    setUserDetail({
+                      ...userDetail,
+                      [event.target.name]: event.target.value,
+                    })
+                  }
                 />
               </div>
             </div>
@@ -203,7 +290,13 @@ const Register = (props) => {
               <select
                 id="city"
                 className="form-control inputBG"
-                onChange={(event) => onChangeHandler(event)}
+                name="city"
+                onChange={(event) =>
+                  setUserDetail({
+                    ...userDetail,
+                    [event.target.name]: event.target.value,
+                  })
+                }
               >
                 <option defaultValue>Choose...</option>
                 <option>Akosombo</option>
@@ -222,7 +315,13 @@ const Register = (props) => {
                 className="form-control inputBG"
                 id="address"
                 placeholder="Address"
-                onChange={(event) => onChangeHandler(event)}
+                name="address"
+                onChange={(event) =>
+                  setUserDetail({
+                    ...userDetail,
+                    [event.target.name]: event.target.value,
+                  })
+                }
               />
             </div>
           </div>
@@ -246,19 +345,19 @@ const Register = (props) => {
               disabled={isDisabled}
               type="submit"
               onClick={(event) => submit(event)}
-              className="btn btn-primary rounded-pill px-5"
+              className="btn btn-primary rounded-pill px-5 my-4"
             >
               Create Account
             </button>
           </div>
-          <div className="mt-1">
+          {/* <div className="mt-1">
             <p>
               Already have an account?{" "}
               <a href="#/" className="link">
                 Login here
               </a>
             </p>
-          </div>
+          </div> */}
         </form>
       </div>
     </Auxiliary>
