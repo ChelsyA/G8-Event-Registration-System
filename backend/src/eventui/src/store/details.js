@@ -1,5 +1,5 @@
 export const loginDetail = {
-    email: '',
+    username: '',
     password: '',
 }
 
@@ -10,6 +10,8 @@ export const registerDetail = {
     last_name: '',
     password: '',
     password2: '',
+    code: '',
+    is_checked: false,
     phone_number: '',
     city: '',
     address: ''

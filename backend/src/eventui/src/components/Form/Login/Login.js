@@ -1,12 +1,13 @@
-import React from "react";
+import React,{ useState } from "react";
 import Auxiliary from "../../../hoc/Auxiliary";
-import * as action from '../../../store/auth';
 import axios from 'axios';
 import * as consts from '../../../store/constants'
 import * as details from '../../../store/details';
+import { Toast, notify } from "../../libpac/notify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = (props) => {
-
+  let [isValid, setValid] = useState(false);
   const data = {
     ...details.loginDetail
   }
@@ -14,7 +15,10 @@ const Login = (props) => {
   const submit = (event) => {
     event.persist();
     event.preventDefault();
-    axios
+    validate(["username","password"]);
+    if(isValid) {
+      console.log(data)
+      axios
       .post(`${consts.DJ_AUTH_URL}login\\`, data)
       .then(res => {
         if (res.status === 200) {
@@ -25,13 +29,33 @@ const Login = (props) => {
           };
           props.submitLogin(user)
           localStorage.setItem("user", JSON.stringify(user));
-          action.checkAuthTimeout(3600);
+          notify(
+            "Logged in successfully",
+            "success"
+          );
         }
       })
       .catch(err => {
-        alert('error happen')
-        action.authFail(err);
+        return;
       });
+    }
+  };
+
+  const validate = (ids) => {
+    ids.forEach(id => {
+      if(data[id] === "") {
+        const splitId = id.split("_").join(" ");
+        notify(
+          `Please ${id === "password2" ? "confirm password" : splitId} field is required!`,
+          "error"
+        );
+        return;
+      }
+      else {
+        console.log(data[id])
+        setValid(true)
+      }
+    });
   };
 
   const onChangeHandler = (event) => {
@@ -41,6 +65,7 @@ const Login = (props) => {
 
   return (
     <Auxiliary>
+      {<Toast/>}
       <div className="col-md-4 col-sm-8 col-xs-6 mx-auto panel">
         <div className="text-center py-4">
           <h3 className="form-title font-weight-bold">LOGIN</h3>
@@ -57,9 +82,6 @@ const Login = (props) => {
               onChange={(event) => onChangeHandler(event)}
               required={true}
             />
-            {/* <small id="emailHelp" className="form-text text-muted">
-              We'll never share your email with anyone else.
-            </small> */}
           </div>
           <div className="form-group">
             <label htmlFor="password">Password <span className="require">*</span></label>
@@ -73,8 +95,9 @@ const Login = (props) => {
             />
           </div>
           <button
+            // disabled={isDisabled}
             onClick={(event) => submit(event)}
-            className="btn btn-primary btn-block borderRadius"
+            className="btn btn-primary btn-block rounded-pill"
           >
             Submit
           </button>
