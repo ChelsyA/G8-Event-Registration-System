@@ -3,7 +3,8 @@ import './App.css';
 import Auxiliary from './hoc/Auxiliary';
 import Navbar from './components/Navbar/Navbar';
 import FormPanel from './components/Form/Form';
-import { authCheckState } from './store/auth';
+import { Toast, notify } from "./components/Helper/notify";
+import "react-toastify/dist/ReactToastify.css";
 
 class App extends Component {
   state = {
@@ -12,7 +13,13 @@ class App extends Component {
   }
 
   componentDidMount() {
-    authCheckState()
+    const user = JSON.parse(localStorage.getItem("user"));
+    const expireDate = new Date(user.expireDate);
+    const expireTime = (expireDate.getTime() - new Date().getTime()) / 1000;
+    setTimeout(() => {
+      // set authenticated to false if expired
+        this.setState({isAuthenticated: false})
+    }, expireTime * 1000);
   }
 
   setSwitchForm = (isloginform) => {
@@ -28,6 +35,10 @@ class App extends Component {
   onSubmitRegister = (result) => {
     console.log(result)
     if(result.is_success) {
+      notify(
+        "Registered successfully! Please login to proceed.",
+        "success"
+      );
       this.setState({isLoginForm: result.is_success})
     }
   }
@@ -47,6 +58,7 @@ class App extends Component {
 
     return (
       <Auxiliary>
+        {<Toast/>}
         {
           this.state.isAuthenticated ? <Navbar /> : form
         }        

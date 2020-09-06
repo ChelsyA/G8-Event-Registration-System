@@ -1,8 +1,8 @@
 import { ToastContainer, toast } from "react-toastify";
 
-export const notify = (message, type = "success") => {
+export const notify = (message, type = "success", place = "bottom-right") => {
     const opt = {
-      position: "bottom-right",
+      position: place,
       autoClose: 8000,
       hideProgressBar: false,
       closeOnClick: true,
