@@ -26,7 +26,7 @@ const Login = (props) => {
           const user = {
             token: res.data.key,
             username: data.username,
-            expireDate: new Date(new Date().getTime() + 3600 * 1000)
+            expireDate: new Date(new Date().getTime() + 3600 * 100000)
           };
           props.submitLogin(user)
           localStorage.setItem("user", JSON.stringify(user));
@@ -53,7 +53,8 @@ const Login = (props) => {
           const splitId = id.split("_").join(" ");
           notify(
             `Please ${id === "password2" ? "confirm password" : splitId} field is required!`,
-            "error"
+            "error",
+            'top-center'
           );
         }
       }

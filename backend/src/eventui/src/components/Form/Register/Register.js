@@ -7,12 +7,17 @@ import Auxiliary from "../../../hoc/Auxiliary";
 import * as consts from "../../../store/constants";
 import * as details from "../../../store/details";
 import countrycodes from "../../../store/countrycodes";
+import { diffDate } from '../../Helper/func';
+
 // import { WaveLoading } from 'react-loadingg';
 // import { Backdrop } from '../../Helper/Backdrop';
 
 const Register = (props) => {
   const [userDetail, setUserDetail] = useState({ ...details.registerDetail });
-
+  const user = JSON.parse(localStorage.getItem("user"));
+  const expire = user === null ? new Date(new Date().getTime() + 3600 * 1000) : user.expireDate;
+  const nowDate = new Date();
+  console.log(diffDate(nowDate, expire));
   // let [isLoading, setLoading] = useState(false);
   let [isDisabled, setDisabled] = useState(true);
   let isValid = false;
@@ -125,7 +130,7 @@ const Register = (props) => {
   const options = countrycodes.map((option, i) => {
     return (
       <option key={i} value={option.dial_code}>
-        {option.name} : {option.dial_code}
+        {option.name} : ({option.dial_code})
       </option>
     );
   });
