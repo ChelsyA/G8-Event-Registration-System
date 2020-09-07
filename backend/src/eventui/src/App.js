@@ -12,15 +12,15 @@ class App extends Component {
     isAuthenticated: false,
   }
 
-  componentDidMount() {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const expireDate = new Date(user.expireDate);
-    const expireTime = (expireDate.getTime() - new Date().getTime()) / 1000;
-    setTimeout(() => {
-      // set authenticated to false if expired
-        this.setState({isAuthenticated: false})
-    }, expireTime * 1000);
-  }
+//   componentDidMount() {
+//     const user = JSON.parse(localStorage.getItem("user"));
+//     const expireDate = new Date(user.expireDate);
+//     const expireTime = (expireDate.getTime() - new Date().getTime()) / 1000;
+//     setTimeout(() => {
+//       // set authenticated to false if expired
+//         this.setState({isAuthenticated: false})
+//     }, expireTime * 1000);
+//   }
 
   setSwitchForm = (isloginform) => {
     this.setState({isLoginForm: isloginform});
