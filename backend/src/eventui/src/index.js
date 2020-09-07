@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import './style.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import './components/libpac/Fortawesome';
+import './components/Helper/Fortawesome';
 
 ReactDOM.render(
   <React.StrictMode>
