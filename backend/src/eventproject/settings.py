@@ -38,12 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'phonenumber_field',
     'dj_rest_auth',
-    'eventapp',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'eventapp',
 ]
 
 MIDDLEWARE = [
@@ -143,7 +142,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'eventui/build/static'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'eventui/build/static'), os.path.join(BASE_DIR, 'staticfiles'),)
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 AUTH_USER_MODEL = 'eventapp.User'
