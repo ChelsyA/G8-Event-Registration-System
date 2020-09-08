@@ -1,6 +1,8 @@
 from rest_framework import serializers
+import phonenumbers
 
 from eventapp.models import User, UserProfile
+
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(
@@ -15,6 +17,11 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         }
 
     def save(self):
+        raw_number = self.validated_data['phone_number']
+        parsedNumber = phonenumbers.parse(
+            raw_number, None) if raw_number is not None else None
+        phone_number = phonenumbers.format_number(
+            parsedNumber, phonenumbers.PhoneNumberFormat.NATIONAL) if parsedNumber else ""
         user = User(
             email=self.validated_data['email'],
             username=self.validated_data['username'],

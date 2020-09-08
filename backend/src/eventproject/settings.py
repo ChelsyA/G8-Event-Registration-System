@@ -26,7 +26,7 @@ SECRET_KEY = 'flp$nseoz+ref6k_ftjhyneieeyo(i46)=%$+wyp6+cx%fiz#p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["51.11.37.127", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -38,12 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'phonenumber_field',
     'dj_rest_auth',
-    'eventapp',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'eventapp',
 ]
 
 MIDDLEWARE = [
@@ -61,7 +60,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:8000",
-    "http://127.0.0.1:8000"
+    "http://127.0.0.1:8000",
+    "http://51.11.37.127:80"
 ]
 
 PASSWORD_HASHERS = [
@@ -141,6 +141,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'eventui/build/static'),)
 ACCOUNT_UNIQUE_EMAIL = True

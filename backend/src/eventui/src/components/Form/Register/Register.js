@@ -7,18 +7,9 @@ import Auxiliary from "../../../hoc/Auxiliary";
 import * as consts from "../../../store/constants";
 import * as details from "../../../store/details";
 import countrycodes from "../../../store/countrycodes";
-import { diffDate } from '../../Helper/func';
-
-// import { WaveLoading } from 'react-loadingg';
-// import { Backdrop } from '../../Helper/Backdrop';
 
 const Register = (props) => {
   const [userDetail, setUserDetail] = useState({ ...details.registerDetail });
-  const user = JSON.parse(localStorage.getItem("user"));
-  const expire = user === null ? new Date(new Date().getTime() + 3600 * 1000) : user.expireDate;
-  const nowDate = new Date();
-  console.log(diffDate(nowDate, expire));
-  // let [isLoading, setLoading] = useState(false);
   let [isDisabled, setDisabled] = useState(true);
   let isValid = false;
   let isCheck = false;
@@ -46,15 +37,16 @@ const Register = (props) => {
       notify("Both password must match!", "error");
       return;
     }
-    
-    userDetail.phone_number = userDetail.code + userDetail.phone_number;
-    if (validPhoneNumber(userDetail.code, userDetail.phone_number)) {
+    const code = userDetail.code.toLowerCase() === "code" ? "" : userDetail.code;
+    if (validPhoneNumber(code, userDetail.phone_number)) {
       notify(
-        "Phone number is not valid!",
+        "Please add code if phone number is given.",
         "error"
       );
       return;
     }
+
+    userDetail.phone_number = userDetail.code + userDetail.phone_number;
 
     if (isCheck) {
       notify(
@@ -64,7 +56,6 @@ const Register = (props) => {
       return;
     } else {
       if (isValid) {
-        // setLoading(true);
         axios
           .post(`${consts.EVENTAPP_URL}register`, userDetail,)
           .then((res) => {
@@ -88,13 +79,13 @@ const Register = (props) => {
   const validPhoneNumber = (code, ph) => {
     let invalid = false;
     if(code !== "" && ph === "") {
-      invalid = true;
+        invalid = code !== "" && ph === "";
     }
-    else if (ph !== "" && code === "") {
-      invalid = true;
+    else if (code === "" && ph !== "") {
+        invalid = code === "" && ph !== "";
     }
     else {
-      invalid = false;
+        invalid = false;
     }
     return invalid;
   }
@@ -119,7 +110,7 @@ const Register = (props) => {
     });
   };
 
-  const matchPassword = (p1, p2) => p1 === p2;
+  const matchPassword = (p1, p2) => p1 === p2 && p1.length >= 6 && p2.length >= 6;
 
   const isChecked = (event) => {
     event.persist();

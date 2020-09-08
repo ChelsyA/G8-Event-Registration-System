@@ -1,8 +1,11 @@
 import moment from 'moment';
 
-export const diffDate = (nowDate, expectedDate) => {
+export const isExpired = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const expire = user === null ? new Date() : user.expire;
+    const nowDate = new Date();
     const mNowDate = moment(nowDate);
-    const mExpectedDate = moment(expectedDate);
+    const mExpectedDate = moment(expire);
     
-    return mNowDate.diff(mExpectedDate, "days");
+    return mExpectedDate.diff(mNowDate, "days") === 0;
 }
