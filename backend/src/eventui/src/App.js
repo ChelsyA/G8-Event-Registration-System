@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import "./App.css";
-import Auxiliary from "./hoc/Auxiliary";
-import Navbar from "./components/Navbar/Navbar";
-import FormPanel from "./components/Form/Form";
 import { Toast, notify } from "./components/Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
+
+import "./App.css";
+import Auxiliary from "./hoc/Auxiliary";
+import FormPanel from "./components/Form/Form";
+import EventLayout from './components/Events/EventLayout';
 import { isExpired } from "./components/Helper/func";
 
 class App extends Component {
@@ -29,8 +30,8 @@ class App extends Component {
     }
   };
 
-  onLogout = (result) => {
-    if(result){
+  onLogout = (is_logout) => {
+    if(is_logout){
       this.setState({ isAuthenticated: false });
     }
     else {
@@ -48,7 +49,7 @@ class App extends Component {
 
   render() {
     const form = (
-      <div className="container mt-2 mb-3">
+      <div className={this.state.isLoginForm ? "container mtop mb-3" : "container mt-3 mb-3"}>
         <div className="row mx-1">
           <div className="col-md-9 col-sm-12 col-xs-12 mx-auto text-center py-3">
             <div
@@ -81,8 +82,9 @@ class App extends Component {
 
     return (
       <Auxiliary>
-        {<Toast />}
-        {this.state.isAuthenticated ? <Navbar onlogout={this.onLogout} is_auth={this.state.isAuthenticated} /> : form}
+        <Toast />
+        {/* {form} */}
+        <EventLayout isAuthenticated={this.state.isAuthenticated}/>
       </Auxiliary>
     );
   }

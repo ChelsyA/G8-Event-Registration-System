@@ -5,36 +5,39 @@ import { DJ_AUTH_URL } from '../../store/constants';
 
 const Navbar = (props) => {
 
+  const navLink = (isLoginSelected) => {
+    return isLoginSelected ? console.log("Navigate to Login") : console.log("Navigate to Register");
+  }
+
   const logout = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    var config = {
+    const config = {
       method: 'post',
       url: `${DJ_AUTH_URL}logout/`,
       headers: { 
-        'Authorization': `Token ${user.token}` , 
+        'Authorization': `Token ${user.token}`,
       }
     };
     
     axios(config)
-    .then((res) => {
-      console.log(res);
+    .then(res => {
       if(res.data.status === 200)
       {
         localStorage.removeItem("user");
         props.onlogout(true);
       }
     })
-    .catch(function (error) {
+    .catch(err => {
+      localStorage.removeItem("user");
+      props.onlogout(true);
       return;
     });
-
-    console.log(DJ_AUTH_URL);
   }
 
   return (
     <Auxiliary>
       <header className="header">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-dark header-bg fixed-top">
           <a className="navbar-brand font-weight-bold" href="#/">
             G8
           </a>
@@ -64,14 +67,14 @@ const Navbar = (props) => {
               </li>
             </ul>
             <ul className="navbar-nav ml-auto">
-              <li className="nav-item" onClick={logout}>
+              <li className="nav-item" onClick={props.is_auth ? logout : () => navLink(true)}>
                 <button className="btn btn-primary">
                   {props.is_auth ? "Logout" : "Login"}
                 </button>
               </li>
               {!props.is_auth ? (
                 <li className="nav-item">
-                  <button className="btn btn-outline-info">
+                  <button className="btn btn-outline-info" onClick={() => navLink(false)}>
                     Register
                   </button>
                 </li>
