@@ -1,15 +1,34 @@
 import React, { Component } from "react";
-import Auxiliary from "../../hoc/Auxiliary";
 import { Toast, notify } from "../Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "./Event/Footer";
 import Event from "./Event/Event";
 import { count } from "../Helper/func";
 import Navbar from "../Navbar/Navbar";
+import Auxiliary from "../../hoc/Auxiliary";
+import Modal from "../Wigets/Modal";
+import EventRegistration from "./Event/EventRegistration";
 
 class EventLayout extends Component {
+  state = {
+    title: "Title ",
+    name: "Leslie",
+    bio: `Looking for something to do in Accra? Whether you're a local,
+      new in town or just cruising through we've got loads of great
+      tips and events. You can explore by location, what's popular,
+      our top picks, free stuff... you got this. Ready?`,
+  };
+
+  loadEventInfo = (data) => {
+    this.setState({
+      title: data
+    });
+  };
+
   render() {
-    const eventLists = count(26).map((_, i) => <Event key={i} />);
+    const eventLists = count(26).map((_, i) => (
+      <Event key={i} loadInfo={this.loadEventInfo} info={i} />
+    ));
     return (
       <Auxiliary>
         <Toast />
@@ -42,9 +61,10 @@ class EventLayout extends Component {
           </div>
         </main>
 
-        <Footer>
-          &copy; Group Eight - Event Registration System. All rights reserved.
-        </Footer>
+        <Footer />
+        <Modal title={this.state.title}>
+          <EventRegistration />
+        </Modal>
       </Auxiliary>
     );
   }

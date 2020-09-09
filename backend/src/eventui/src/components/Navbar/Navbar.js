@@ -37,9 +37,9 @@ const Navbar = (props) => {
   return (
     <Auxiliary>
       <header className="header">
-        <nav className="navbar navbar-expand-lg navbar-dark header-bg fixed-top">
+        <nav className="navbar navbar-expand-lg navbar-dark header-bg fixed-top shadow-lg">
           <a className="navbar-brand font-weight-bold" href="#/">
-            G8
+            OctaVents
           </a>
           <button
             className="navbar-toggler"
@@ -57,14 +57,14 @@ const Navbar = (props) => {
             <ul className="navbar-nav mr-auto">
               <li className="nav-item active">
                 <a className="nav-link" href="#/">
-                  Home <span className="sr-only">(current)</span>
+                Events <span className="sr-only">(current)</span>
                 </a>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a className="nav-link" href="#/">
                   Events
                 </a>
-              </li>
+              </li> */}
             </ul>
             <ul className="navbar-nav ml-auto">
               <li className="nav-item" onClick={props.is_auth ? logout : () => navLink(true)}>
