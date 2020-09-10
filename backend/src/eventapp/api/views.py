@@ -1,10 +1,13 @@
+from django.shortcuts import render
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
 
-from eventapp.api.serializers import UserRegistrationSerializer
-from eventapp.models import User
+from eventapp.api.serializers import UserRegistrationSerializer, EventSerializer
+from eventapp.users.models import User, UserProfile
+from eventapp.events.models import Event
 
 @api_view(['POST', ])
 def registration_view(request):
@@ -60,3 +63,48 @@ def checkEmail(email):
         return None
     if user != None:
         return email
+
+
+@api_view(['GET'])
+def EventView(request):
+    api_urls = {
+        'List':'/Event-list/',
+        'Create':'/Event-create',
+        'Update':'/Event-update/<str:pk>/',
+        'Delete':'/Event-delete/<str:pk>/',
+        }
+    
+    return Response(api_urls)
+
+@api_view(['GET'])
+def EventList(request):
+    events = Event.objects.all()
+    serializer = EventSerializer(Events, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def EventCreate(request):
+    serializer = EventSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def EventUpdate(request, pk):
+    event = Event.objects.get(id=pk)
+    serializer = EventSerializer(instance=event, data=request.data)
+    
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+@api_view(['DELETE'])
+def EventDelete(request, pk):
+    event = Event.objects.get(id=pk)
+    event.delete()
+    
+    return Response('Event successfully deleted!')
+
+
+

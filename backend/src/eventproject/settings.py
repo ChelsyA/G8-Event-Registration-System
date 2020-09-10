@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from corsheaders.defaults import default_methods, default_headers
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -38,12 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'dj_rest_auth',
     'rest_framework',
     'rest_framework.authtoken',
+    'dj_rest_auth',
     'corsheaders',
-    'eventapp',
     'phone_field',
+    'eventapp',
 ]
 
 MIDDLEWARE = [
@@ -63,6 +64,14 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
     "http://51.11.37.127"
+]
+
+CORS_ALLOW_METHODS = list(default_methods) + [
+    'POKE',
+]
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'my-custom-header',
 ]
 
 PASSWORD_HASHERS = [

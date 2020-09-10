@@ -17,8 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 from eventapp.views import test
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('eventapp.api.urls')),
     path('test/', test),
     path('api-auth/', include('rest_framework.urls')),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),

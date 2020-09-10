@@ -1,7 +1,8 @@
 from rest_framework import serializers
 import phonenumbers
 
-from eventapp.models import User, UserProfile
+from eventapp.users.models import User, UserProfile
+from eventapp.events.models import Event
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -10,8 +11,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name',
-                  'address', 'password', 'password2', 'city', 'phone_number')
+        fields = ('id', 'first_name', 'last_name', 'email', 'username', 'address', 'password', 'password2', 'city', 'phone_number')
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -41,3 +41,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user_profile = UserProfile(user=user)
         user_profile.save()
         return user
+
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = '__all__'
