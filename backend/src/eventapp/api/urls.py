@@ -8,7 +8,7 @@ from eventapp.events.views import EventView
 from eventapp.users.views import UserView
 # from rest_framework.authtoken.views import obtain_auth_token
 
-
+app_name = 'eventapp'
 
 router = routers.DefaultRouter()
 router.register(r'users', UserView)

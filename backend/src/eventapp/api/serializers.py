@@ -1,7 +1,7 @@
 from rest_framework import serializers
 import phonenumbers
 
-from eventapp.users.models import User, UserProfile
+from eventapp.models import User, UserProfile
 from eventapp.events.models import Event
 
 

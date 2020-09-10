@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
 
 from eventapp.api.serializers import UserRegistrationSerializer, EventSerializer
-from eventapp.users.models import User, UserProfile
+from eventapp.models import User, UserProfile
 from eventapp.events.models import Event
 
 @api_view(['POST', ])
