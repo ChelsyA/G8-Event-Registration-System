@@ -89,7 +89,7 @@ def EventCreate(request):
         serializer.save()
     return Response(serializer.data)
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def EventUpdate(request, pk):
     event = Event.objects.get(id=pk)
     serializer = EventSerializer(instance=event, data=request.data)

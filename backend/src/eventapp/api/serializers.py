@@ -44,7 +44,12 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ('title', 'location', 'speaker', 'tagline')
+        fields = ('title', 'time', 'location', 'room_capacity', 'speaker', 'tagline')
+
+    def save(self):
+        event = Event()
+        event.save()
+        return event
 
 # class EventBookingSerializer(serializers.ModelSerializer):
 #     class Meta:
