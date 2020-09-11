@@ -78,7 +78,7 @@ def EventView(request):
 @api_view(['GET'])
 def EventList(request):
     events = Event.objects.all()
-    serializer = EventSerializer(Events, many=True)
+    serializer = EventSerializer(events, many=True)
     return Response(serializer.data)
 
 @api_view(['POST'])
@@ -89,7 +89,7 @@ def EventCreate(request):
         serializer.save()
     return Response(serializer.data)
 
-@api_view(['PUT'])
+@api_view(['POST'])
 def EventUpdate(request, pk):
     event = Event.objects.get(id=pk)
     serializer = EventSerializer(instance=event, data=request.data)
