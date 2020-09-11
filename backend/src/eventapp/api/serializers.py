@@ -1,8 +1,7 @@
 from rest_framework import serializers
 import phonenumbers
 
-from eventapp.models import User, UserProfile
-from eventapp.events.models import Event
+from eventapp.models import User, UserProfile, Event
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -45,4 +44,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = '__all__'
+        fields = ('title', 'location', 'speaker', 'tagline')
+
+# class EventBookingSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = EventBooking
+#         fields = '__all__'

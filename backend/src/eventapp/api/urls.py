@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.urls import path, include
-from rest_framework import routers
 from . import views
+from rest_framework import routers
 from eventapp.api.views import registration_view, EventList, EventCreate, EventUpdate, EventDelete
 from eventapp.events.views import EventView
 from eventapp.users.views import UserView
-# from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework.authtoken.views import obtain_auth_token
 
 app_name = 'eventapp'
 
