@@ -13,4 +13,3 @@ class EventAdmin(admin.ModelAdmin):
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Event, EventAdmin)
-# admin.site.unregister(Group)

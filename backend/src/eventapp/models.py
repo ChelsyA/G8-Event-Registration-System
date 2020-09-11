@@ -13,12 +13,6 @@ class User(AbstractUser):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # first_name = models.CharField(max_length=50)
-    # last_name = models.CharField(max_length=50)
-    # email = models.EmailField(max_length=100, unique = True)
-    # username = models.CharField(max_length=50, unique = True)
-    # password = models.CharField(max_length=50)
-    # password2 = models.CharField(max_length=50)
     
     def __str__(self):
         return self.user.username
@@ -40,5 +34,5 @@ class Event(models.Model):
     def __str__(self):
         return self.title
 
-# class EventBooking(models.Model):
+
     

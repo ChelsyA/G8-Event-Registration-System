@@ -27,8 +27,8 @@ def registration_view(request):
         serializer = UserRegistrationSerializer(data=request.data)
         
         password = request.data.get('password')
-        password2 = request.data.get('password2')
-        if password != password2:
+        confirm_password = request.data.get('confirm_password')
+        if password != confirm_password:
             return Response({
                 'Password': 'Password must match!'
             })

@@ -5,12 +5,12 @@ from eventapp.models import User, UserProfile, Event
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    password2 = serializers.CharField(
+    confirm_password = serializers.CharField(
         style={'input_type': 'password'}, write_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'username', 'address', 'password', 'password2', 'city', 'phone_number')
+        fields = ('id', 'first_name', 'last_name', 'email', 'username', 'address', 'password', 'confirm_password', 'city', 'phone_number')
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -31,8 +31,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             phone_number=self.validated_data['phone_number'],
         )
         password = self.validated_data['password']
-        password2 = self.validated_data['password2']
-        if password != password2:
+        confirm_password = self.validated_data['confirm_password']
+        if password != confirm_password:
             raise serializers.ValidationError(
                 {'password': 'Passwords must match.'})
         user.set_password(password)
@@ -51,7 +51,3 @@ class EventSerializer(serializers.ModelSerializer):
         event.save()
         return event
 
-# class EventBookingSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = EventBooking
-#         fields = '__all__'
