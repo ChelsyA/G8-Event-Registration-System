@@ -1,0 +1,99 @@
+.bd-placeholder-img {
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.event-color {
+  background: #4B0314;
+  color: white;
+}
+
+.modal-content {
+  border-radius: 0;
+  /* background-image: url(https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F101214770%2F442451758882%2F1%2Foriginal.20200424-082529?w=800&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C14%2C1200%2C600&s=44200171cd4ff501a0762e1042830668); */
+  /* background-image: url('./background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed; */
+}
+
+@media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+  }
+}
+
+.header-bg {
+  background: #4B0314;
+  border-bottom: 5px solid #f8a5b8;
+}
+
+.event-btn {
+  background: #4B0314;
+  color: white;
+}
+
+.jumbotron {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  margin-bottom: 0;
+  background-color: rgba(255, 255, 255, 0.849);
+  border-radius: 0;
+}
+@media (min-width: 768px) {
+  .jumbotron {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+.event-img {
+  height: 70%;
+  width: 100%;
+}
+
+.event-width {
+  max-width: 540px;
+}
+
+.jumbotron p:last-child {
+  margin-bottom: 0;
+}
+
+.jumbotron h1 {
+  font-weight: 300;
+}
+
+.jumbotron .container {
+  max-width: 40rem;
+}
+
+footer {
+  background: #E8E8E8;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+footer p {
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.navbar {
+  /* padding: 2px; */
+  text-align: center;
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: .5rem 1rem;
+}
