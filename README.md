@@ -1,5 +1,5 @@
 # G8-Event-Registration-System
-Before getting start with our project, please follow instructions below:
+Before getting started with our project, please follow the instructions below:
 
 ## Installation
 First, clone the repo:
@@ -68,7 +68,7 @@ source env/bin/activate
 Install all the packages from requirements.txt
 
 ```shell
-pip3 or python install requirements.txt
+pip3 or python install -r requirements.txt
 ```
 
 Migrate
@@ -82,4 +82,4 @@ Start the app
 python3 or python manage.py runserver
 ```
 
-Created by G8 Teams We love :coffee: :pizza:, and :dancer:
+Created by G8 Teams We love :coffee: :pizza:, and :dance:
