@@ -52,7 +52,7 @@ def register_view(request):
         if password != password2:
             data['password'] = 'Password must match!'
             data['response'] = 'Error'
-            return Response(data)
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
         if serializer.is_valid():
             user = serializer.save()
@@ -64,7 +64,7 @@ def register_view(request):
             data['token'] = token.key
         else:
             data = serializer.errors
-        return Response(data)
+        return Response(data, status=status.HTTP_201_CREATED)
 
 
 def validate_username(username):
