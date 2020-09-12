@@ -30,15 +30,25 @@ const Modal = (props) => {
               </h5>
               <button
                 type="button"
-                className="close"
+                className="btn event-color rounded-circle "
                 data-dismiss="modal"
                 aria-label="Close"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body">
-                {props.children}
+            <div className="modal-body mx-3">
+              {/* <div className="float-left">
+                <button
+                  type="button"
+                  className="btn btn-danger rounded-circle"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div> */}
+              {props.children}
             </div>
             {/* <div className="modal-footer">
               <button

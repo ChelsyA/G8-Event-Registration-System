@@ -5,7 +5,7 @@ import Auxiliary from "../../../hoc/Auxiliary";
 export default Event = (props) => {
   const getData = (data) => {
     props.loadInfo(data);
-  }
+  };
   return (
     <Auxiliary>
       <div className="col-md-4">
@@ -28,7 +28,13 @@ export default Event = (props) => {
                   className="btn btn-sm btn-outline-secondary"
                   data-toggle="modal"
                   data-target="#staticBackdrop"
-                  onClick={() => getData(props.info)}
+                  onClick={() =>
+                    getData({
+                      index: props.info,
+                      imageUrl:
+                        "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F101214770%2F442451758882%2F1%2Foriginal.20200424-082529?w=800&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C14%2C1200%2C600&s=44200171cd4ff501a0762e1042830668",
+                    })
+                  }
                 >
                   View
                 </button>

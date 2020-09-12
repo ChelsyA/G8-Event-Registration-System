@@ -17,11 +17,14 @@ class EventLayout extends Component {
       new in town or just cruising through we've got loads of great
       tips and events. You can explore by location, what's popular,
       our top picks, free stuff... you got this. Ready?`,
+    imageUrl: ""
   };
 
   loadEventInfo = (data) => {
     this.setState({
-      title: data
+      ...this.state,
+      title: data.index,
+      imageUrl: data.imageUrl,
     });
   };
 
@@ -33,7 +36,7 @@ class EventLayout extends Component {
       <Auxiliary>
         <Toast />
         <Navbar is_auth={this.props.isAuthenticated} />
-        <main role="main">
+        <main role="main" className="pt-5 mt-5">
           <section className="jumbotron text-center">
             <div className="container">
               <h1 className="display-2">Events</h1>
@@ -63,7 +66,7 @@ class EventLayout extends Component {
 
         <Footer />
         <Modal title={this.state.title}>
-          <EventRegistration />
+          <EventRegistration data={this.state}/>
         </Modal>
       </Auxiliary>
     );

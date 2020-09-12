@@ -36,8 +36,9 @@ const Navbar = (props) => {
 
   return (
     <Auxiliary>
-      <header className="header">
-        <nav className="navbar navbar-expand-lg navbar-dark header-bg fixed-top shadow-lg">
+      <header className="header fixed-top">
+        {/* <nav className="navbar navbar-expand-lg navbar-light shadow-lg fixed-top"> */}
+        <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-lg fixed-top">
           <a className="navbar-brand font-weight-bold" href="#/">
             OctaVents
           </a>
@@ -68,7 +69,7 @@ const Navbar = (props) => {
             </ul>
             <ul className="navbar-nav ml-auto">
               <li className="nav-item" onClick={props.is_auth ? logout : () => navLink(true)}>
-                <button className="btn btn-primary">
+                <button className="btn btn-primary mb-2">
                   {props.is_auth ? "Logout" : "Login"}
                 </button>
               </li>

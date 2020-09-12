@@ -15,7 +15,7 @@ const Footer = (_) => {
               margin="32px"
             />
           </p>
-          <p className="text-center text-white">
+          <p className="text-center text-black">
             &copy; GROUP 8 COMPANY NAME All Reversed Rights.
           </p>
         </div>
