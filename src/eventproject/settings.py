@@ -53,14 +53,9 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    # 'django.contrib.auth.middleware.RemoteUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-# AUTHENTICATION_BACKENDS = [
-#     'django.contrib.auth.backends.RemoteUserBackend',
-# ]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -152,11 +147,23 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'eventui/build/static'),)
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 AUTH_USER_MODEL = 'eventapp.User'
-
+REST_USE_JWT = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication', 
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
 }
+
+import environ
+env = environ.Env()
+environ.Env.read_env()
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = '509df0ba6cee60'
+EMAIL_HOST_PASSWORD = 'd6a68c17c25985'
+EMAIL_PORT = '2525'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
