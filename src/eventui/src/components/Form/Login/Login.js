@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import Auxiliary from "../../../hoc/Auxiliary";
 import axios from "axios";
-import * as consts from "../../../store/constants";
-import * as details from "../../../store/details";
 import { Toast, notify } from "../../Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
+import * as consts from "../../../store/constants";
+import {loginDetail} from "../../../store/details";
 import { feedback } from "../../Helper/utils";
 
 const Login = (props) => {
   let isValid = false;
   let isSubmit = false;
-  const data = {
-    ...details.loginDetail,
+  let data = {
+    ...loginDetail,
   };
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const submit = (event) => {
     isSubmit = true;
@@ -20,9 +22,11 @@ const Login = (props) => {
     event.preventDefault();
     validate(["username", "password"]);
     if (isValid) {
+      setIsLoading(true);
       axios
-        .post(`${consts.DJ_AUTH_URL}login\\`, data)
+        .post(`${consts.DJ_AUTH_URL}login/`, data)
         .then((res) => {
+          setIsLoading(false);
           if (res.status === 200) {
             const user = {
               token: res.data.access_token,
@@ -34,8 +38,13 @@ const Login = (props) => {
           }
         })
         .catch((err) => {
+          setIsLoading(false);
           isSubmit = false;
-          notify("Unable to log in with provided credentials.", "error", "top-center");
+          notify(
+            "Unable to log in with provided credentials.",
+            "error",
+            "top-center"
+          );
           return;
         });
     }
@@ -66,6 +75,13 @@ const Login = (props) => {
       {<Toast />}
       <div className="col-md-4 col-sm-8 col-xs-6 mx-auto panel">
         <div className="text-center py-4">
+          <button
+            onClick={() => props.back()}
+            type="button"
+            className="btn btn-lg float-left"
+          >
+            <i className="fas fa-arrow-left"></i>
+          </button>
           <h3 className="form-title font-weight-bold">LOGIN</h3>
         </div>
         <form method="POST" className="p-1">
@@ -109,10 +125,16 @@ const Login = (props) => {
             </div>
           </div>
           <button
+            disabled={isLoading}
             onClick={(event) => submit(event)}
             className="btn btn-color btn-block rounded-pill my-4"
           >
-            LOGIN
+            {isLoading ? "Sending..." : "LOGIN"}{" "}
+            {isLoading ? (
+              <i className="fas fa-spinner fa-spin"></i>
+            ) : (
+              <i className="fas fa-sign-in-alt"></i>
+            )}
           </button>
           <div className="mt-3 text-center">
             <p>

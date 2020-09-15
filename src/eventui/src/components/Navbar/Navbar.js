@@ -10,19 +10,21 @@ const Navbar = (props) => {
 
   const logout = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    const csrftoken = document.cookie;
+    console.log(user.token)
+    // return;
     const config = {
       method: "post",
       url: `${DJ_AUTH_URL}logout/`,
       headers: {
-        'Authorization': `Token ${user.token}`,
+        'Authorization': `Bearer ${user.token}`,
         // 'Cookie': csrftoken,
       },
     };
 
     axios(config)
       .then((res) => {
-        if (res.data.status === 200) {
+        console.log(res.status)
+        if (res.status === 200) {
           localStorage.removeItem("user");
           props.onlogout(true);
         }
@@ -30,6 +32,7 @@ const Navbar = (props) => {
       .catch((err) => {
         localStorage.removeItem("user");
         props.onlogout(true);
+        console.log(err)
         return;
       });
   };

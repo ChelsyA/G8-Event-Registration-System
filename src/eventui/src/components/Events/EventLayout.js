@@ -1,36 +1,36 @@
 import React, { Component } from "react";
 import { Toast, notify } from "../Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from 'axios';
 import Footer from "./Event/Footer";
 import Event from "./Event/Event";
-import { count } from "../Helper/utils";
 import Navbar from "../Navbar/Navbar";
 import Auxiliary from "../../hoc/Auxiliary";
 import Modal from "../Wigets/Modal";
 import EventRegistration from "./Event/EventRegistration";
+import  * as consts  from '../../store/constants';
 
 class EventLayout extends Component {
   state = {
-    title: "Title ",
-    name: "Leslie",
-    bio: `Looking for something to do in Accra? Whether you're a local,
-      new in town or just cruising through we've got loads of great
-      tips and events. You can explore by location, what's popular,
-      our top picks, free stuff... you got this. Ready?`,
-    imageUrl: "",
+    events: [],
+    event: null
   };
 
-  loadEventInfo = (data) => {
+  componentDidMount() {
+    axios.get(`${consts.EVENTAPP_URL}events/`).then(res => this.setState({events: res.data}))
+  }
+
+  loadEventInfo = (event) => {
+    console.log(event);
     this.setState({
       ...this.state,
-      title: data.index,
-      imageUrl: data.imageUrl,
+      event: event
     });
   };
 
   render() {
-    const eventLists = count(5).map((_, i) => (
-      <Event key={i} loadInfo={this.loadEventInfo} info={i} />
+    const eventLists = this.state.events.map((event, i) => (
+      <Event key={i} eventInfo={event} loadInfo={this.loadEventInfo} info={i} />
     ));
     return (
       <Auxiliary>
@@ -71,8 +71,8 @@ class EventLayout extends Component {
         </main>
 
         <Footer />
-        <Modal title={this.state.title}>
-          <EventRegistration user={this.props.user} data={this.state} />
+        <Modal event={this.state.event}>
+          <EventRegistration isAuth={this.props.isAuthenticated} user={this.props.user} event={this.state.event} />
         </Modal>
       </Auxiliary>
     );

@@ -29,32 +29,47 @@ class App extends Component {
 
   onSubmitLogin = (result) => {
     if (result) {
-      this.setState({ isAuthenticated: true, isLoginForm: !result, user: getUser()});
+      this.setState({
+        isAuthenticated: true,
+        isLoginForm: !result,
+        user: result,
+        isRegisterForm: !result,
+      });
     }
   };
 
   onLoginPageHandler = (selectPage) => {
     if (selectPage.toLowerCase() === "login") {
-      this.setState({ isLoginForm: true });
+      this.setState({ isLoginForm: true, isRegisterForm: true });
+      // this.setState({ isRegisterForm: true });
     } else if (selectPage.toLowerCase() === "register") {
       this.setState({ isRegisterForm: true });
     } else {
-      this.setState({ isLoginForm: true });
+      this.setState({ isLoginForm: false, isRegisterForm: false });
+      // this.setState({ isRegisterForm: false });
     }
   };
 
   onLogout = (is_logout) => {
     if (is_logout) {
       this.setState({ isAuthenticated: false });
+      this.setState({ user: null });
     } else {
       notify("Ooop!, Look like you can't log out.", "info");
     }
   };
 
+  onNavBack = () => {
+    this.setState({ isLoginForm: false, isRegisterForm: false });
+  }
+
   onSubmitRegister = (result) => {
     console.log(result);
     if (result.is_success) {
-      notify("Registered successfully! Confirm email link has been sent so please check your inbox or spam.", "success");
+      notify(
+        "Registered successfully! Confirm email link has been sent so please check your inbox or spam.",
+        "success"
+      );
       this.setState({ isLoginForm: result.is_success });
     }
   };
@@ -90,6 +105,7 @@ class App extends Component {
           <FormPanel
             onLogin={this.onSubmitLogin}
             onRegister={this.onSubmitRegister}
+            onBack={this.onNavBack}
             isLogin={this.state.isLoginForm}
             isRegister={this.state.isRegisterForm}
           />

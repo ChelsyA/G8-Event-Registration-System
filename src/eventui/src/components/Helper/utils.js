@@ -1,4 +1,10 @@
 import moment from 'moment';
+import axios from 'axios';
+import  * as consts  from '../../store/constants';
+
+export const getEvents = () => {
+  return axios.get(`${consts.EVENTAPP_URL}events/`).then(res => res.data)
+}
 
 export const getUser = () => isExpired ? JSON.parse(localStorage.getItem("user")) : null;
 

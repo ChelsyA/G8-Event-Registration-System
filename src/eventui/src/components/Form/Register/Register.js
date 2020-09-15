@@ -5,13 +5,14 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Auxiliary from "../../../hoc/Auxiliary";
 import * as consts from "../../../store/constants";
-import * as details from "../../../store/details";
+import {registerDetail} from "../../../store/details";
 import countrycodes from "../../../store/countrycodes";
 import { feedback } from "../../Helper/utils";
 
 const Register = (props) => {
-  const [userDetail, setUserDetail] = useState({ ...details.registerDetail });
+  const [userDetail, setUserDetail] = useState({ ...registerDetail });
   let [isDisabled, setDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   let isValid = false;
   let isCheck = false;
   let isSubmit = false;
@@ -20,7 +21,6 @@ const Register = (props) => {
     isSubmit = true;
     event.persist();
     event.preventDefault();
-    console.log(userDetail);
     validate([
       "first_name",
       "last_name",
@@ -31,8 +31,7 @@ const Register = (props) => {
     ]);
 
     if (!emailValid(userDetail.email)) {
-      feedback("password", false, "Invaild email! Please enter a valid email.");
-      // notify("Invaild email! Please enter a valid email.", "error");
+      feedback("email", false, "Invaild email! Please enter a valid email.");
       return;
     }
     if (!matchPassword(userDetail.password, userDetail.password2)) {
@@ -46,7 +45,6 @@ const Register = (props) => {
       userDetail.code.toLowerCase() === "code" ? "" : userDetail.code;
     if (validPhoneNumber(code, userDetail.phone_number)) {
       feedback("phone_number", false);
-      // notify("Please add code if phone number is given.", "error");
       return;
     }
 
@@ -60,14 +58,19 @@ const Register = (props) => {
       return;
     } else {
       if (isValid) {
+        setIsLoading(true);
         axios
           .post(`${consts.EVENTAPP_URL}register/`, userDetail)
           .then((res) => {
-            if (res.status === 200) {
+            setIsLoading(true);
+            if (res.status === 201) {
+              console.log(res.data);
+              console.log(res.status);
               props.submitRegister(res.data);
             }
           })
           .catch((err) => {
+            setIsLoading(true);
             notify(
               "Oops something go wrong! Please check to ensure all required fields are entered",
               "error"
@@ -128,7 +131,14 @@ const Register = (props) => {
     <Auxiliary>
       {<Toast />}
       <div className="col-md-9 col-sm-12 col-xs-12 mx-auto panel">
-        <div className="text-center pt-3">
+        <div className="text-center py-3">
+          <button
+            onClick={() => props.back()}
+            type="button"
+            className="btn btn-lg float-left"
+          >
+            <i className="fas fa-arrow-left"></i>
+          </button>
           <h3 className="form-title font-weight-bold">Registration</h3>
         </div>
         <form className="p-2" method="POST" autoComplete="off">
@@ -389,17 +399,10 @@ const Register = (props) => {
               onClick={(event) => submit(event)}
               className="btn btn-color rounded-pill px-5 my-4"
             >
-              Create Account
+              {isLoading ? "Processing... " : "Create Account "}
+              {isLoading ? <i className="fas fa-spinner fa-spin"></i> : null}
             </button>
           </div>
-          {/* <div className="mt-1">
-            <p>
-              Already have an account?{" "}
-              <a href="#/" className="link">
-                Login here
-              </a>
-            </p>
-          </div> */}
         </form>
       </div>
     </Auxiliary>

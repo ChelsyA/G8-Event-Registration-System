@@ -17,13 +17,13 @@ const Modal = (props) => {
           <div className="modal-content">
             <div className="modal-header text-center">
               <h5 className="modal-title" id="staticBackdropLabel">
-                {props.title !== ""
-                  ? "Education For Racial Equity : " + (props.title + 1)
+                {props.event !== null
+                  ? props.event.title
                   : "OctaVents"}
               </h5>
               <button
                 type="button"
-                className="btn event-color rounded-circle "
+                className="btn btn-color rounded-circle "
                 data-dismiss="modal"
                 aria-label="Close"
               >

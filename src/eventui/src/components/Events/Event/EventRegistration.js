@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Auxiliary from "../../../hoc/Auxiliary";
 
 const EventRegistration = (props) => {
+  const [isLoading, setIsLoading] = useState(false)
   const submit = (event) => {
     event.persist();
     event.preventDefault();
@@ -16,6 +17,7 @@ const EventRegistration = (props) => {
 
   return (
     <Auxiliary>
+      {props.isAuth ? null : (<p className="text-center require">Please either login or register before proceeding. Thanks!</p>)}
       <form className="p-1">
         <div className="form-group">
           <label htmlFor="name">Your Name</label>
@@ -68,11 +70,11 @@ const EventRegistration = (props) => {
         </div>
         <button
           type="button"
-          // disabled={isDisabled}
+          disabled={isLoading || !props.isAuth ? true : false}
           onClick={(event) => submit(event)}
           className="btn btn-color btn-block rounded-pill my-4"
         >
-          REGISTER NOW
+          BOOK ME!
         </button>
       </form>
     </Auxiliary>
