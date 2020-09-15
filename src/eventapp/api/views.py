@@ -27,12 +27,13 @@ class RegisterView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         user_data = serializer.data
+        user_data['is_success'] = True
         user = User.objects.get(username=user_data['username'])
         code = Util.generate()
         token = TokenCode(user=user, code=code)
         token.save()
         current_site = get_current_site(request).domain
-        absurl = 'http://'+current_site+"/api/eventapp/verify-email/" + \
+        absurl = 'http://'+current_site+"/api/verify-email/" + \
             "?token="+code+"&ui="+str(user.id)
         email_body = 'Hi '+user.username + \
             ' Use the link below to verify your email \n' + absurl

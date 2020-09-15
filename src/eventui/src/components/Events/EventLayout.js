@@ -3,7 +3,7 @@ import { Toast, notify } from "../Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "./Event/Footer";
 import Event from "./Event/Event";
-import { count } from "../Helper/func";
+import { count } from "../Helper/utils";
 import Navbar from "../Navbar/Navbar";
 import Auxiliary from "../../hoc/Auxiliary";
 import Modal from "../Wigets/Modal";
@@ -17,7 +17,7 @@ class EventLayout extends Component {
       new in town or just cruising through we've got loads of great
       tips and events. You can explore by location, what's popular,
       our top picks, free stuff... you got this. Ready?`,
-    imageUrl: ""
+    imageUrl: "",
   };
 
   loadEventInfo = (data) => {
@@ -29,14 +29,20 @@ class EventLayout extends Component {
   };
 
   render() {
-    const eventLists = count(26).map((_, i) => (
+    const eventLists = count(5).map((_, i) => (
       <Event key={i} loadInfo={this.loadEventInfo} info={i} />
     ));
     return (
       <Auxiliary>
         <Toast />
-        <Navbar is_auth={this.props.isAuthenticated} />
-        <main role="main" className="pt-5 mt-5">
+        <Navbar
+          loginNavHandler={this.props.loginNavHandler}
+          user={this.props.user}
+          is_auth={this.props.isAuthenticated
+          }
+          onlogout={this.props.islogout}
+        />
+        <main role="main" className="pt-5 mt-2">
           <section className="jumbotron text-center">
             <div className="container">
               <h1 className="display-2">Events</h1>
@@ -66,7 +72,7 @@ class EventLayout extends Component {
 
         <Footer />
         <Modal title={this.state.title}>
-          <EventRegistration data={this.state}/>
+          <EventRegistration user={this.props.user} data={this.state} />
         </Modal>
       </Auxiliary>
     );

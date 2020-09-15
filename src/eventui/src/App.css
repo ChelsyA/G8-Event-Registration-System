@@ -1,7 +1,12 @@
 .panel {
   background: #FAFAFA;
   box-shadow: 0 2px 3px 3px #235a7d56;
-  border-top: 4px solid #0069D9;
+  border-top: 4px solid #330000;
+}
+
+.event-panel {
+  background: #FAFAFA;
+  box-shadow: 0 2px 3px 3px #235a7d56;
 }
 
 .mtop {
@@ -30,4 +35,12 @@
 
 .require {
   color: red;
+}
+
+.is-invisible {
+  display: none;
+}
+
+.is-visible {
+  display: block;
 }
