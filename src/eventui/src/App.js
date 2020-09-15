@@ -5,19 +5,22 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Auxiliary from "./hoc/Auxiliary";
 import FormPanel from "./components/Form/Form";
-import EventLayout from './components/Events/EventLayout';
-import { isExpired } from "./components/Helper/func";
+import EventLayout from "./components/Events/EventLayout";
+import { isExpired, getUser } from "./components/Helper/utils";
 
 class App extends Component {
   state = {
-    isLoginForm: true,
+    isLoginForm: false,
+    isRegisterForm: false,
     isAuthenticated: false,
+    user: null,
   };
 
   componentDidMount() {
     isExpired()
       ? this.setState({ isAuthenticated: false })
       : this.setState({ isAuthenticated: true });
+    this.setState({ user: getUser() });
   }
 
   setSwitchForm = (isloginform) => {
@@ -26,30 +29,43 @@ class App extends Component {
 
   onSubmitLogin = (result) => {
     if (result) {
-      this.setState({ isAuthenticated: true });
+      this.setState({ isAuthenticated: true, isLoginForm: !result, user: getUser()});
+    }
+  };
+
+  onLoginPageHandler = (selectPage) => {
+    if (selectPage.toLowerCase() === "login") {
+      this.setState({ isLoginForm: true });
+    } else if (selectPage.toLowerCase() === "register") {
+      this.setState({ isRegisterForm: true });
+    } else {
+      this.setState({ isLoginForm: true });
     }
   };
 
   onLogout = (is_logout) => {
-    if(is_logout){
+    if (is_logout) {
       this.setState({ isAuthenticated: false });
-    }
-    else {
+    } else {
       notify("Ooop!, Look like you can't log out.", "info");
     }
-  }
+  };
 
   onSubmitRegister = (result) => {
     console.log(result);
     if (result.is_success) {
-      notify("Registered successfully! Please login to proceed.", "success");
+      notify("Registered successfully! Confirm email link has been sent so please check your inbox or spam.", "success");
       this.setState({ isLoginForm: result.is_success });
     }
   };
 
   render() {
     const form = (
-      <div className={this.state.isLoginForm ? "container mtop mb-3" : "container mt-3 mb-3"}>
+      <div
+        className={
+          this.state.isLoginForm ? "container mtop mb-3" : "container mt-3 mb-3"
+        }
+      >
         <div className="row mx-1">
           <div className="col-md-9 col-sm-12 col-xs-12 mx-auto text-center py-3">
             <div
@@ -75,6 +91,7 @@ class App extends Component {
             onLogin={this.onSubmitLogin}
             onRegister={this.onSubmitRegister}
             isLogin={this.state.isLoginForm}
+            isRegister={this.state.isRegisterForm}
           />
         </div>
       </div>
@@ -83,8 +100,16 @@ class App extends Component {
     return (
       <Auxiliary>
         <Toast />
-        {/* {form} */}
-        <EventLayout isAuthenticated={this.state.isAuthenticated}/>
+        {this.state.isLoginForm || this.state.isRegisterForm ? (
+          form
+        ) : (
+          <EventLayout
+            loginNavHandler={this.onLoginPageHandler}
+            user={this.state.user}
+            isAuthenticated={this.state.isAuthenticated}
+            islogout={this.onLogout}
+          />
+        )}
       </Auxiliary>
     );
   }

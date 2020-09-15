@@ -7,6 +7,7 @@ import Auxiliary from "../../../hoc/Auxiliary";
 import * as consts from "../../../store/constants";
 import * as details from "../../../store/details";
 import countrycodes from "../../../store/countrycodes";
+import { feedback } from "../../Helper/utils";
 
 const Register = (props) => {
   const [userDetail, setUserDetail] = useState({ ...details.registerDetail });
@@ -28,21 +29,24 @@ const Register = (props) => {
       "password",
       "password2",
     ]);
-    
+
     if (!emailValid(userDetail.email)) {
-      notify("Invaild email! Please enter a valid email.", "error");
+      feedback("password", false, "Invaild email! Please enter a valid email.");
+      // notify("Invaild email! Please enter a valid email.", "error");
       return;
     }
-    if (!matchPassword(userDetail.password, userDetail.password2,)) {
-      notify("Both password must match!", "error");
+    if (!matchPassword(userDetail.password, userDetail.password2)) {
+      notify("Both password must match and be at least 7 characters", "error");
+      feedback("password", false);
+      feedback("password2", false);
       return;
     }
-    const code = userDetail.code.toLowerCase() === "code" ? "" : userDetail.code;
+
+    const code =
+      userDetail.code.toLowerCase() === "code" ? "" : userDetail.code;
     if (validPhoneNumber(code, userDetail.phone_number)) {
-      notify(
-        "Please add code if phone number is given.",
-        "error"
-      );
+      feedback("phone_number", false);
+      // notify("Please add code if phone number is given.", "error");
       return;
     }
 
@@ -57,7 +61,7 @@ const Register = (props) => {
     } else {
       if (isValid) {
         axios
-          .post(`${consts.EVENTAPP_URL}register`, userDetail,)
+          .post(`${consts.EVENTAPP_URL}register/`, userDetail)
           .then((res) => {
             if (res.status === 200) {
               props.submitRegister(res.data);
@@ -78,39 +82,33 @@ const Register = (props) => {
 
   const validPhoneNumber = (code, ph) => {
     let invalid = false;
-    if(code !== "" && ph === "") {
-        invalid = code !== "" && ph === "";
-    }
-    else if (code === "" && ph !== "") {
-        invalid = code === "" && ph !== "";
-    }
-    else {
-        invalid = false;
+    if (code !== "" && ph === "") {
+      invalid = code !== "" && ph === "";
+    } else if (code === "" && ph !== "") {
+      invalid = code === "" && ph !== "";
+    } else {
+      invalid = false;
     }
     return invalid;
-  }
+  };
 
   const validate = (ids) => {
     ids.forEach((id) => {
       if (userDetail[id] === "") {
         isValid = false;
         isSubmit = false;
-        const splitId = id.split("_").join(" ");
         if (isSubmit === false) {
-          notify(
-            `Please ${
-              id === "password2" ? "confirm password" : splitId
-            } field is required!`,
-            "error"
-          );
+          feedback(id, false);
         }
       } else {
         isValid = true;
+        feedback(id, true);
       }
     });
   };
 
-  const matchPassword = (p1, p2) => p1 === p2 && p1.length >= 6 && p2.length >= 6;
+  const matchPassword = (p1, p2) =>
+    p1 === p2 && p1.length >= 6 && p2.length >= 6;
 
   const isChecked = (event) => {
     event.persist();
@@ -152,6 +150,12 @@ const Register = (props) => {
                   })
                 }
               />
+              <div
+                id="first_name_feedback"
+                className="invalid-feedback is-invisible"
+              >
+                Please username is required.
+              </div>
             </div>
             <div className="form-group col-md-6">
               <label htmlFor="last_name">
@@ -170,6 +174,12 @@ const Register = (props) => {
                   })
                 }
               />
+              <div
+                id="last_name_feedback"
+                className="invalid-feedback is-invisible"
+              >
+                Please username is required.
+              </div>
             </div>
           </div>
           <div className="form-row">
@@ -190,6 +200,12 @@ const Register = (props) => {
                   })
                 }
               />
+              <div
+                id="email_feedback"
+                className="invalid-feedback is-invisible"
+              >
+                Please username is required.
+              </div>
             </div>
             <div className="form-group col-md-6">
               <label htmlFor="username">
@@ -208,6 +224,12 @@ const Register = (props) => {
                   })
                 }
               />
+              <div
+                id="username_feedback"
+                className="invalid-feedback is-invisible"
+              >
+                Please username is required.
+              </div>
             </div>
           </div>
           <div className="form-row">
@@ -228,6 +250,12 @@ const Register = (props) => {
                   })
                 }
               />
+              <div
+                id="password_feedback"
+                className="invalid-feedback is-invisible"
+              >
+                Please password is required.
+              </div>
             </div>
             <div className="form-group col-md-6">
               <label htmlFor="confirmpassowrd">
@@ -246,6 +274,12 @@ const Register = (props) => {
                   })
                 }
               />
+              <div
+                id="password2_feedback"
+                className="invalid-feedback is-invisible"
+              >
+                Please confirm password is required.
+              </div>
             </div>
           </div>
           <div className="form-row">
@@ -266,6 +300,12 @@ const Register = (props) => {
                   <option defaultValue>Code</option>
                   {options}
                 </select>
+                <div
+                  id="code_feedback"
+                  className="invalid-feedback is-invisible"
+                >
+                  Please code is required.
+                </div>
                 <input
                   type="number"
                   className="form-control inputBG w-25"
@@ -279,6 +319,12 @@ const Register = (props) => {
                     })
                   }
                 />
+                <div
+                  id="phone_number_feedback"
+                  className="invalid-feedback is-invisible"
+                >
+                  Please phone number is required.
+                </div>
               </div>
             </div>
             <div className="form-group col-md-6">
@@ -341,7 +387,7 @@ const Register = (props) => {
               disabled={isDisabled}
               type="submit"
               onClick={(event) => submit(event)}
-              className="btn btn-primary rounded-pill px-5 my-4"
+              className="btn btn-color rounded-pill px-5 my-4"
             >
               Create Account
             </button>
