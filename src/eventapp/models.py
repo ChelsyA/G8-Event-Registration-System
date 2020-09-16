@@ -49,7 +49,7 @@ class TokenCode(models.Model):
 
 class EventBooking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    event = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
     ticket = models.IntegerField()
 
     def __str__(self):
