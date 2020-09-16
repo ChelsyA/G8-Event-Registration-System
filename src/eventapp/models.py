@@ -23,6 +23,7 @@ class Event(models.Model):
         ('Afternoon', 'Afternoon'),
     )
     time = models.CharField(max_length=30, blank=False, choices=time_choice)
+    date = models.DateField()
     location = models.CharField(max_length=100)
     room_capacity = models.CharField(max_length=50)
     speaker = models.CharField(max_length=50)
@@ -44,3 +45,12 @@ class TokenCode(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class EventBooking(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(User, on_delete=models.CASCADE)
+    ticket = models.IntegerField()
+
+    def __str__(self):
+        return self.event
