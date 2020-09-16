@@ -53,4 +53,4 @@ class EventBooking(models.Model):
     ticket = models.IntegerField()
 
     def __str__(self):
-        return self.event
+        return self.event.title
