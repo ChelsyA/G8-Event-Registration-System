@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.response import Response
 
-from eventapp.models import Event, User
+from eventapp.models import Event, User, EventBooking
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -31,7 +31,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ('id', 'title', 'time', 'location',
+        fields = ('title', 'time', 'date', 'location',
                   'room_capacity', 'speaker', 'tagline', 'attendees')
 
     # def to_representation(self, obj):
@@ -41,3 +41,9 @@ class EventSerializer(serializers.ModelSerializer):
     #     return {
     #         'count': count
     #     }
+
+
+class EventBookingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventBooking
+        fields = ('user', 'event', 'ticket')
