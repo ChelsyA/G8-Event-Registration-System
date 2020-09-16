@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 import Auxiliary from "../../../hoc/Auxiliary";
+import axios from "axios";
 
 const EventRegistration = (props) => {
   const [isLoading, setIsLoading] = useState(false)
+  const book = {userId: null, eventId: null, ticket: 0, phone_number: null}
   const submit = (event) => {
     event.persist();
     event.preventDefault();
-    console.log(props.user);
+    book.userId = props.user.pk;
+    book.eventId = props.event.id;
+    // axios.post("", book)
   };
 
   const onChangeHandler = (event) => {
     event.persist();
     event.preventDefault();
-    console.log(event.target.value);
+    const {id, value} = event.target;
+    book[id] = value;
   };
 
   return (
@@ -50,11 +55,15 @@ const EventRegistration = (props) => {
             className="form-control inputBG"
             id="phone_number"
             placeholder="Phone Number"
+            name="phone_number"
+            onChange={(event) => onChangeHandler(event)}
           />
         </div>
         <div className="form-group">
           <label htmlFor="ticket">Ticket Number</label>
-          <select id="ticket" className="form-control inputBG">
+          <select id="ticket" className="form-control inputBG" 
+            name="ticket"
+            onChange={(event) => onChangeHandler(event)}>
             <option defaultValue>Select...</option>
             <option>1</option>
             <option>2</option>

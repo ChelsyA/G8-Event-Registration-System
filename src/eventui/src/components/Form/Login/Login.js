@@ -66,6 +66,8 @@ const Login = (props) => {
   };
 
   const onChangeHandler = (event) => {
+    event.persist();
+    event.preventDefault();
     const { id, value } = event.target;
     data[id] = value;
   };

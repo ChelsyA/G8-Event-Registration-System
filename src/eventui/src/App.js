@@ -41,12 +41,10 @@ class App extends Component {
   onLoginPageHandler = (selectPage) => {
     if (selectPage.toLowerCase() === "login") {
       this.setState({ isLoginForm: true, isRegisterForm: true });
-      // this.setState({ isRegisterForm: true });
     } else if (selectPage.toLowerCase() === "register") {
       this.setState({ isRegisterForm: true });
     } else {
       this.setState({ isLoginForm: false, isRegisterForm: false });
-      // this.setState({ isRegisterForm: false });
     }
   };
 
@@ -64,7 +62,6 @@ class App extends Component {
   }
 
   onSubmitRegister = (result) => {
-    console.log(result);
     if (result.is_success) {
       notify(
         "Registered successfully! Confirm email link has been sent so please check your inbox or spam.",

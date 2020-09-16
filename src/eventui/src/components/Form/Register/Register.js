@@ -64,8 +64,6 @@ const Register = (props) => {
           .then((res) => {
             setIsLoading(true);
             if (res.status === 201) {
-              console.log(res.data);
-              console.log(res.status);
               props.submitRegister(res.data);
             }
           })

@@ -29,10 +29,6 @@ class Event(models.Model):
     tagline = models.CharField(max_length=100)
     attendees = models.ManyToManyField(User, blank=True)
 
-    def count_room_capacity(self):
-
-        return
-
     def __str__(self):
         return self.title
 
