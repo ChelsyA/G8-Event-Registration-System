@@ -7,6 +7,7 @@ import Auxiliary from "./hoc/Auxiliary";
 import FormPanel from "./components/Form/Form";
 import EventLayout from "./components/Events/EventLayout";
 import { isExpired, getUser } from "./components/Helper/utils";
+import Dashboard from './components/admin/Dashboard';
 
 class App extends Component {
   state = {
@@ -123,6 +124,7 @@ class App extends Component {
             islogout={this.onLogout}
           />
         )}
+        {/* <Dashboard /> */}
       </Auxiliary>
     );
   }

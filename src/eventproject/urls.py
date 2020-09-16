@@ -8,7 +8,7 @@ from eventapp.views import (add_user_to_event, eventbookings,
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/<int:id>/', test),
+    path('test/<int:eid>/', test),
     path('userbookings/<int:id>/', userbookings, name="userbookings"),
     path('eventbookings/<int:id>/', eventbookings, name="eventbookings"),
     path('adduserevent/<int:ui>/<int:ei>/',

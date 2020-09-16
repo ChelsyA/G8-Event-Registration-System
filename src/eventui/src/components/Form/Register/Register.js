@@ -162,7 +162,7 @@ const Register = (props) => {
                 id="first_name_feedback"
                 className="invalid-feedback is-invisible"
               >
-                Please username is required.
+                Please first name is required.
               </div>
             </div>
             <div className="form-group col-md-6">
@@ -186,7 +186,7 @@ const Register = (props) => {
                 id="last_name_feedback"
                 className="invalid-feedback is-invisible"
               >
-                Please username is required.
+                Please last name is required.
               </div>
             </div>
           </div>
@@ -212,7 +212,7 @@ const Register = (props) => {
                 id="email_feedback"
                 className="invalid-feedback is-invisible"
               >
-                Please username is required.
+                Please email is required.
               </div>
             </div>
             <div className="form-group col-md-6">
