@@ -38,12 +38,12 @@ export default Event = (props) => {
                 >
                   Book now
                 </button>
-                <button
+                {/* <button
                   type="button"
                   className="btn btn-sm btn-info"
                 >
                   View info
-                </button>
+                </button> */}
               </div>
               <small className="text-muted">9 mins</small>
             </div>

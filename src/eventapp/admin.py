@@ -6,7 +6,7 @@ from .models import User, Event, TokenCode, EventBooking
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['id', 'username', 'email', 'first_name', 'last_name']
+    list_display = ['username', 'email', 'first_name', 'last_name']
 
 
 class EventAdmin(admin.ModelAdmin):

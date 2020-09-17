@@ -1,5 +1,5 @@
 from django.core.mail import EmailMessage
-from eventapp.models import User
+from eventapp.models import EventBooking, User
 import datetime
 
 
@@ -44,3 +44,26 @@ class Util:
         d2 = datetime.now()
         d1 = datetime.date(d1)
         return abs((d2 - d1).days)
+    
+    @staticmethod
+    def checkIfUserHasBook(books, uid):
+        listIds = []
+        if books is None:
+            return False
+        else:
+            for book in books:
+                listIds.append(book.user_id)
+            if uid in listIds:
+                return True
+            else:
+                return False
+    
+    @staticmethod 
+    def lengthEventBooking(eid):
+        books = EventBooking.objects.filter(event_id__exact=eid)
+        count = 0
+        if books is None:
+            return 0
+        for book in books:
+            count += 1
+        return count
