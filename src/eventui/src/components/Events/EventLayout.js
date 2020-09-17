@@ -14,11 +14,43 @@ import  {EVENTAPP_URL}  from '../../store/constants';
 class EventLayout extends Component {
   state = {
     events: [],
-    event: null
+    event: null,
+    user: null
   };
 
   componentDidMount() {
-    axios.get(`${EVENTAPP_URL}events/`).then(res => this.setState({events: res.data}))
+    this.init();
+  }
+
+  init() {
+    this.getEvents();
+  }
+
+  getUser() {
+    // http://127.0.0.1:8000/api/user/1/
+    const id = this.props.user.pk
+    
+  }
+
+  getEvents () {
+    axios.get(`${EVENTAPP_URL}events/`).then((res) => {
+      const data = res.data;
+
+      const mapEvents = data.map((event) => {
+        return {
+          id: event.id,
+          title: event.title,
+          speaker: event.speaker,
+          location: event.location,
+          date: event.date,
+          time: event.time,
+          room_capacity: event.room_capacity,
+          tagline: event.tagline,
+          attendees: event.attendees.length,
+        };
+      });
+      this.setState({ events: mapEvents });
+    });
   }
 
   loadEventInfo = (event) => {
@@ -36,6 +68,7 @@ class EventLayout extends Component {
       <Auxiliary>
         <Toast />
         <Navbar
+          onpage={this.props.onpage}
           loginNavHandler={this.props.loginNavHandler}
           user={this.props.user}
           is_auth={this.props.isAuthenticated
@@ -52,14 +85,14 @@ class EventLayout extends Component {
                 tips and events. You can explore by location, what's popular,
                 our top picks, free stuff... you got this. Ready?
               </p>
-              <p>
+              {/* <p>
                 <a href="#" className="btn btn-primary my-2">
                   Main call to action
                 </a>
                 <a href="#" className="btn btn-secondary my-2">
                   Secondary action
                 </a>
-              </p>
+              </p> */}
             </div>
           </section>
 

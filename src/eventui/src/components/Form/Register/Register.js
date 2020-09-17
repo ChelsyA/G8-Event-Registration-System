@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Auxiliary from "../../../hoc/Auxiliary";
 import * as consts from "../../../store/constants";
 import {registerDetail} from "../../../store/details";
-import countrycodes from "../../../store/countrycodes";
 import { feedback } from "../../Helper/utils";
 
 const Register = (props) => {
@@ -41,15 +40,6 @@ const Register = (props) => {
       return;
     }
 
-    const code =
-      userDetail.code.toLowerCase() === "code" ? "" : userDetail.code;
-    if (validPhoneNumber(code, userDetail.phone_number)) {
-      feedback("phone_number", false);
-      return;
-    }
-
-    userDetail.phone_number = userDetail.code + userDetail.phone_number;
-
     if (isCheck) {
       notify(
         "Please accept our terms and conditions before proceeding!",
@@ -62,13 +52,13 @@ const Register = (props) => {
         axios
           .post(`${consts.EVENTAPP_URL}register/`, userDetail)
           .then((res) => {
-            setIsLoading(true);
+            setIsLoading(false);
             if (res.status === 201) {
               props.submitRegister(res.data);
             }
           })
           .catch((err) => {
-            setIsLoading(true);
+            setIsLoading(false);
             notify(
               "Oops something go wrong! Please check to ensure all required fields are entered",
               "error"
@@ -80,18 +70,6 @@ const Register = (props) => {
   };
 
   const emailValid = (e) => e.includes("@") && e.includes(".");
-
-  const validPhoneNumber = (code, ph) => {
-    let invalid = false;
-    if (code !== "" && ph === "") {
-      invalid = code !== "" && ph === "";
-    } else if (code === "" && ph !== "") {
-      invalid = code === "" && ph !== "";
-    } else {
-      invalid = false;
-    }
-    return invalid;
-  };
 
   const validate = (ids) => {
     ids.forEach((id) => {
@@ -116,14 +94,6 @@ const Register = (props) => {
     isCheck = event.target.checked;
     setDisabled(!event.target.checked);
   };
-
-  const options = countrycodes.map((option, i) => {
-    return (
-      <option key={i} value={option.dial_code}>
-        {option.name} : ({option.dial_code})
-      </option>
-    );
-  });
 
   return (
     <Auxiliary>
@@ -291,50 +261,6 @@ const Register = (props) => {
             </div>
           </div>
           <div className="form-row">
-            <div className="form-group col-md-6">
-              <label htmlFor="phone_number">Phone Number</label>
-              <div className="input-group">
-                <select
-                  id="code"
-                  className="form-control inputBG"
-                  name="code"
-                  onChange={(event) =>
-                    setUserDetail({
-                      ...userDetail,
-                      [event.target.name]: event.target.value,
-                    })
-                  }
-                >
-                  <option defaultValue>Code</option>
-                  {options}
-                </select>
-                <div
-                  id="code_feedback"
-                  className="invalid-feedback is-invisible"
-                >
-                  Please code is required.
-                </div>
-                <input
-                  type="number"
-                  className="form-control inputBG w-25"
-                  id="phone_number"
-                  placeholder="Phone # eg 551396690"
-                  name="phone_number"
-                  onChange={(event) =>
-                    setUserDetail({
-                      ...userDetail,
-                      [event.target.name]: event.target.value,
-                    })
-                  }
-                />
-                <div
-                  id="phone_number_feedback"
-                  className="invalid-feedback is-invisible"
-                >
-                  Please phone number is required.
-                </div>
-              </div>
-            </div>
             <div className="form-group col-md-6">
               <label htmlFor="city">City</label>
               <select

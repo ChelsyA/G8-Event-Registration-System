@@ -16,7 +16,7 @@ const Footer = (_) => {
             />
           </p>
           <p className="text-center text-black">
-            &copy; GROUP 8 COMPANY NAME All Reversed Rights.
+            &copy; OctaVents All Reversed Rights.
           </p>
         </div>
       </footer>

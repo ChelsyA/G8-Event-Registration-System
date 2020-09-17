@@ -35,6 +35,7 @@ const Login = (props) => {
             };
             props.submitLogin(user);
             localStorage.setItem("user", JSON.stringify(user));
+            window.location.href = consts.DURL
           }
         })
         .catch((err) => {

@@ -23,7 +23,7 @@ const Button = (props) => (
   </div>
 );
 
-const Table = (props) => {
+const Events = (props) => {
   let events = props.events === null ? [] : props.events;
   const [pending, setPending] = React.useState(true);
   React.useEffect(() => {
@@ -64,11 +64,11 @@ const Table = (props) => {
       selector: "attendees",
       sortable: true,
     },
-    {
-      name: "Actions",
-      button: true,
-      cell: (row) => <Button event={row} />,
-    },
+    // {
+    //   name: "Actions",
+    //   button: true,
+    //   cell: (row) => <Button event={row} />,
+    // },
   ];
   return (
     <Auxiliary>
@@ -83,4 +83,4 @@ const Table = (props) => {
   );
 };
 
-export default Table;
+export default Events;

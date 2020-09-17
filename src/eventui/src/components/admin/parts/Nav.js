@@ -1,7 +1,33 @@
 import React from "react";
+import axios from 'axios';
 import Auxiliary from "../../../hoc/Auxiliary";
+import {DJ_AUTH_URL} from '../../../store/constants';
 
 const Nav = (props) => {
+  const logout = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const config = {
+      method: "post",
+      url: `${DJ_AUTH_URL}logout/`,
+      headers: {
+        'Authorization': `Bearer ${user.token}`,
+      },
+    };
+
+    axios(config)
+      .then((res) => {
+        if (res.status === 200) {
+          localStorage.removeItem("user");
+          props.onlogout(true);
+        }
+      })
+      .catch((err) => {
+        localStorage.removeItem("user");
+        props.onlogout(true);
+        return;
+      });
+  };
+
   return (
     <Auxiliary>
       <nav className="navbar navbar-dark sticky-top event-color flex-md-nowrap p-0 shadow">
@@ -21,7 +47,7 @@ const Nav = (props) => {
         </button>
         <ul className="navbar-nav px-3">
           <li className="nav-item text-nowrap">
-            <a className="nav-link" href="#/">
+            <a className="nav-link" href="#/" onClick={logout}>
               Sign out
             </a>
           </li>

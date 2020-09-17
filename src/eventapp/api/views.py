@@ -76,7 +76,7 @@ class VerifyEmail(generics.GenericAPIView):
 
 
 @api_view(['POST', 'GET', 'DELETE'])
-def event_booking_view(request):
+def event_booking_view(request, pk=None):
     if request.method == "POST":
         user = None
         event = None
@@ -117,7 +117,7 @@ def event_booking_view(request):
 
     if request.method == "GET":
         try:
-            uid = request.data.get('user_id')
+            uid = pk
             user = User.objects.get(id=uid)
             books = EventBooking.objects.all().filter(user_id__exact=user.id)
             data = []
@@ -166,11 +166,14 @@ def user_view(request, pk):
             data['email'] = user.email
             data['address'] = user.address
             data['city'] = user.city
+            data['is_superuser'] = user.is_superuser
+            data['is_staff'] = user.is_staff
+            data['pk'] = user.pk
         except User.DoesNotExist:
-            return Response(data, status=status.HTTP_200_OK)
-        if user != None:
             return Response({'error': 'User does not exist!'}, 
                             status=status.HTTP_404_NOT_FOUND)
+        if user != None:
+            return Response(data, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
         user = None
@@ -214,3 +217,22 @@ def user_view(request, pk):
                 'id': pk,
                 'result': result
             })
+
+@api_view(['GET', ])
+def users(request):
+    data = []
+    
+    if request.method == "GET":
+        users = User.objects.all()
+        for user in users:
+            data.append({
+                'username' : user.username,
+                'name' : user.first_name + "" + user.last_name,
+                'email' : user.email,
+                'address' : user.address,
+                'city' : user.city,
+                'is_staff' : user.is_staff,
+                'pk' : user.pk,
+            })
+        
+        return Response(data, status=status.HTTP_200_OK)
