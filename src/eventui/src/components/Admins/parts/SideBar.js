@@ -10,12 +10,14 @@ const SideBar = (props) => {
       >
         <div className="sidebar-sticky pt-3">
           <ul className="nav flex-column">
-            <li className="nav-item">
+            {props.is_superuser ? (
+              <li className="nav-item">
               <a className="nav-link" href="#" onClick={() => props.onSwitch("")}>
                 <i className="fas fa-columns"></i> Dashboard
                 <span className="sr-only">(current)</span>
               </a>
-            </li>
+              </li>
+            ) : null}
             {props.is_superuser ? (
               <li className="nav-item">
                 <a className="nav-link" href="#" onClick={() => props.onSwitch("users")}>
