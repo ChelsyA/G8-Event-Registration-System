@@ -16,7 +16,7 @@ class Dashboard extends Component {
     users: null,
     event: null,
     eventbooks: null,
-    selectPage: ""
+    selectPage: "",
   };
 
   componentDidMount() {
@@ -31,10 +31,12 @@ class Dashboard extends Component {
 
   getBooks() {
     if (!this.props.user.is_superuser) {
-      axios.get(`${EVENTAPP_URL}event-book/${this.props.user.pk}`).then((res) => {
-        console.log(res.data)
-        this.setState({ eventbooks: res.data });
-      });
+      axios
+        .get(`${EVENTAPP_URL}event-book/${this.props.user.pk}`)
+        .then((res) => {
+          console.log(res.data);
+          this.setState({ eventbooks: res.data });
+        });
     }
   }
 
@@ -65,8 +67,8 @@ class Dashboard extends Component {
     });
   }
 
-  onSwitchPage (select = "") {
-    this.setState({ selectPage: select })
+  onSwitchPage(select = "") {
+    this.setState({ selectPage: select });
   }
 
   render() {
@@ -76,7 +78,8 @@ class Dashboard extends Component {
         <div className="container-fluid">
           <div className="row">
             <SideBar
-              onpage={this.props.onpage} onSwitch={this.onSwitchPage.bind(this)}
+              onpage={this.props.onpage}
+              onSwitch={this.onSwitchPage.bind(this)}
               is_superuser={this.props.user.is_superuser}
             />
 
@@ -88,9 +91,15 @@ class Dashboard extends Component {
                 className="my-3 p-2 shadow"
                 style={{ background: "white", borderTop: "5px solid #4B0314" }}
               >
-                {this.state.selectPage === "" ? <Events events={this.state.events}/> : null}
-                {this.state.selectPage === "ebooks" ? <EventBooks books={this.state.eventbooks}/> : null}
-                {this.state.selectPage === "users" ? <Users users={this.state.users} /> : null}
+                {this.state.selectPage === "" ? (
+                  <Events events={this.state.events} />
+                ) : null}
+                {this.state.selectPage === "ebooks" ? (
+                  <EventBooks books={this.state.eventbooks} />
+                ) : null}
+                {this.state.selectPage === "users" ? (
+                  <Users users={this.state.users} />
+                ) : null}
                 {this.state.selectPage === "profile" ? <Profile /> : null}
               </div>
             </main>

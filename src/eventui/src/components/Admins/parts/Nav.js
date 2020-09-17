@@ -1,7 +1,7 @@
 import React from "react";
-import axios from 'axios';
 import Auxiliary from "../../../hoc/Auxiliary";
-import {DJ_AUTH_URL} from '../../../store/constants';
+import axios from "axios";
+import { DJ_AUTH_URL } from "../../../store/constants";
 
 const Nav = (props) => {
   const logout = () => {
@@ -10,7 +10,7 @@ const Nav = (props) => {
       method: "post",
       url: `${DJ_AUTH_URL}logout/`,
       headers: {
-        'Authorization': `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     };
 
