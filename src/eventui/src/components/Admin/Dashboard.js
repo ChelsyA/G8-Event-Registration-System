@@ -1,27 +1,50 @@
 import React, { Component } from "react";
-import axios from 'axios';
+import axios from "axios";
 import "./Dashboard.css";
+import { EVENTAPP_URL } from "../../store/constants";
 import Auxiliary from "../../hoc/Auxiliary";
 import Nav from "./parts/Nav";
 import SideBar from "./parts/SideBar";
-import Table from './parts/Table';
-import  {EVENTAPP_URL}  from '../../store/constants';
+import Events from "./parts/Events";
+import Profile from "./parts/Profile";
+import EventBooks from "./parts/EventBooks";
+import Users from "./parts/Users";
 
 class Dashboard extends Component {
   state = {
     events: [],
-    event: null
+    users: null,
+    event: null,
+    eventbooks: null,
+    selectPage: "",
   };
 
   componentDidMount() {
-    this.loadEvents();
+    this.init();
   }
 
-  loadEvents() {
-    axios.get(`${EVENTAPP_URL}events/`).then(res => {
-      const data = res.data
+  init() {
+    this.getEvents();
+    this.getBooks();
+    this.getUsers();
+  }
 
-      const mapEvents = data.map(event => {
+  getBooks() {
+    if (!this.props.user.is_superuser) {
+      axios
+        .get(`${EVENTAPP_URL}event-book/${this.props.user.pk}`)
+        .then((res) => {
+          console.log(res.data);
+          this.setState({ eventbooks: res.data });
+        });
+    }
+  }
+
+  getEvents() {
+    axios.get(`${EVENTAPP_URL}events/`).then((res) => {
+      const data = res.data;
+
+      const mapEvents = data.map((event) => {
         return {
           id: event.id,
           title: event.title,
@@ -32,28 +55,52 @@ class Dashboard extends Component {
           room_capacity: event.room_capacity,
           tagline: event.tagline,
           attendees: event.attendees.length,
-        }
-      })
-      this.setState({events: mapEvents});
-    })
+        };
+      });
+      this.setState({ events: mapEvents });
+    });
+  }
+
+  getUsers() {
+    axios.get(`${EVENTAPP_URL}users/`).then((res) => {
+      this.setState({ users: res.data });
+    });
+  }
+
+  onSwitchPage(select = "") {
+    this.setState({ selectPage: select });
   }
 
   render() {
     return (
       <Auxiliary>
-        <Nav />
+        <Nav onlogout={this.props.islogout} />
         <div className="container-fluid">
           <div className="row">
-            <SideBar />
+            <SideBar
+              onpage={this.props.onpage}
+              onSwitch={this.onSwitchPage.bind(this)}
+              is_superuser={this.props.user.is_superuser}
+            />
 
             <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
               <div className="row">
-                <div className="col-md-3">
-
-                </div>
+                <div className="col-md-3"></div>
               </div>
-              <div className="my-3 p-2 shadow" style={{ background: "white", borderTop: '5px solid #4B0314' }}>
-                <Table events={this.state.events}/>
+              <div
+                className="my-3 p-2 shadow"
+                style={{ background: "white", borderTop: "5px solid #4B0314" }}
+              >
+                {this.state.selectPage === "" ? (
+                  <Events events={this.state.events} />
+                ) : null}
+                {this.state.selectPage === "ebooks" ? (
+                  <EventBooks books={this.state.eventbooks} />
+                ) : null}
+                {this.state.selectPage === "users" ? (
+                  <Users users={this.state.users} />
+                ) : null}
+                {this.state.selectPage === "profile" ? <Profile /> : null}
               </div>
             </main>
           </div>
