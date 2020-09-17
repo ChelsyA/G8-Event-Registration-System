@@ -1,41 +1,74 @@
 import React, { Component } from "react";
 import { Toast, notify } from "../Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from 'axios';
+
 import Footer from "./Event/Footer";
 import Event from "./Event/Event";
-import { count } from "../Helper/utils";
 import Navbar from "../Navbar/Navbar";
 import Auxiliary from "../../hoc/Auxiliary";
 import Modal from "../Wigets/Modal";
 import EventRegistration from "./Event/EventRegistration";
+import  {EVENTAPP_URL}  from '../../store/constants';
 
 class EventLayout extends Component {
   state = {
-    title: "Title ",
-    name: "Leslie",
-    bio: `Looking for something to do in Accra? Whether you're a local,
-      new in town or just cruising through we've got loads of great
-      tips and events. You can explore by location, what's popular,
-      our top picks, free stuff... you got this. Ready?`,
-    imageUrl: "",
+    events: [],
+    event: null,
+    user: null
   };
 
-  loadEventInfo = (data) => {
+  componentDidMount() {
+    this.init();
+  }
+
+  init() {
+    this.getEvents();
+  }
+
+  getUser() {
+    // http://127.0.0.1:8000/api/user/1/
+    const id = this.props.user.pk
+    
+  }
+
+  getEvents () {
+    axios.get(`${EVENTAPP_URL}events/`).then((res) => {
+      const data = res.data;
+
+      const mapEvents = data.map((event) => {
+        return {
+          id: event.id,
+          title: event.title,
+          speaker: event.speaker,
+          location: event.location,
+          date: event.date,
+          time: event.time,
+          room_capacity: event.room_capacity,
+          tagline: event.tagline,
+          attendees: event.attendees.length,
+        };
+      });
+      this.setState({ events: mapEvents });
+    });
+  }
+
+  loadEventInfo = (event) => {
     this.setState({
       ...this.state,
-      title: data.index,
-      imageUrl: data.imageUrl,
+      event: event
     });
   };
 
   render() {
-    const eventLists = count(5).map((_, i) => (
-      <Event key={i} loadInfo={this.loadEventInfo} info={i} />
+    const eventLists = this.state.events.map((event, i) => (
+      <Event key={i} eventInfo={event} loadInfo={this.loadEventInfo} info={i} />
     ));
     return (
       <Auxiliary>
         <Toast />
         <Navbar
+          onpage={this.props.onpage}
           loginNavHandler={this.props.loginNavHandler}
           user={this.props.user}
           is_auth={this.props.isAuthenticated
@@ -52,14 +85,14 @@ class EventLayout extends Component {
                 tips and events. You can explore by location, what's popular,
                 our top picks, free stuff... you got this. Ready?
               </p>
-              <p>
+              {/* <p>
                 <a href="#" className="btn btn-primary my-2">
                   Main call to action
                 </a>
                 <a href="#" className="btn btn-secondary my-2">
                   Secondary action
                 </a>
-              </p>
+              </p> */}
             </div>
           </section>
 
@@ -71,8 +104,8 @@ class EventLayout extends Component {
         </main>
 
         <Footer />
-        <Modal title={this.state.title}>
-          <EventRegistration user={this.props.user} data={this.state} />
+        <Modal event={this.state.event}>
+          <EventRegistration isAuth={this.props.isAuthenticated} user={this.props.user} event={this.state.event} />
         </Modal>
       </Auxiliary>
     );

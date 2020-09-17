@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from 'axios';
 import { Toast, notify } from "./components/Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -7,6 +8,8 @@ import Auxiliary from "./hoc/Auxiliary";
 import FormPanel from "./components/Form/Form";
 import EventLayout from "./components/Events/EventLayout";
 import { isExpired, getUser } from "./components/Helper/utils";
+import Dashboard from "./components/Admin/Dashboard";
+import { EVENTAPP_URL } from './store/constants';
 
 class App extends Component {
   state = {
@@ -14,13 +17,32 @@ class App extends Component {
     isRegisterForm: false,
     isAuthenticated: false,
     user: null,
+    isDashboard: false,
   };
 
   componentDidMount() {
+    this.init();
+    this.getUser();
+  }
+
+  // componentDidUpdate() {
+  //   this.getUser();
+  // }
+
+  init() {
     isExpired()
       ? this.setState({ isAuthenticated: false })
       : this.setState({ isAuthenticated: true });
-    this.setState({ user: getUser() });
+  }
+
+  getUser() {
+    const user = getUser();
+    // console.log(user)
+    if (user !== null) {
+      axios.get(`${EVENTAPP_URL}user/${user.pk}/`).then(res => {
+        this.setState({ user: res.data});
+      })
+    }
   }
 
   setSwitchForm = (isloginform) => {
@@ -29,33 +51,60 @@ class App extends Component {
 
   onSubmitLogin = (result) => {
     if (result) {
-      this.setState({ isAuthenticated: true, isLoginForm: !result, user: getUser()});
+      this.setState({
+        isAuthenticated: true,
+        isLoginForm: !result,
+        user: result,
+        isRegisterForm: !result,
+      });
+      this.getUser();
     }
   };
 
   onLoginPageHandler = (selectPage) => {
     if (selectPage.toLowerCase() === "login") {
-      this.setState({ isLoginForm: true });
+      this.setState({ isLoginForm: true, isRegisterForm: true });
     } else if (selectPage.toLowerCase() === "register") {
       this.setState({ isRegisterForm: true });
     } else {
-      this.setState({ isLoginForm: true });
+      this.setState({ isLoginForm: false, isRegisterForm: false });
     }
   };
 
   onLogout = (is_logout) => {
     if (is_logout) {
-      this.setState({ isAuthenticated: false });
+      this.setState({ isAuthenticated: false, isDashboard: false });
+      this.setState({ user: null });
     } else {
       notify("Ooop!, Look like you can't log out.", "info");
     }
   };
 
+  onNavBack = () => {
+    this.setState({
+      isLoginForm: false,
+      isRegisterForm: false,
+      isDashboard: false,
+    });
+  };
+
   onSubmitRegister = (result) => {
-    console.log(result);
     if (result.is_success) {
-      notify("Registered successfully! Confirm email link has been sent so please check your inbox or spam.", "success");
+      notify(
+        "Registered successfully! Confirm email link has been sent so please check your inbox or spam.",
+        "success"
+      );
       this.setState({ isLoginForm: result.is_success });
+    }
+  };
+
+  onPageChange = (isDashSelected) => {
+    if (isDashSelected) {
+      console.log("Dashboard");
+      this.setState({ isDashboard: true });
+    } else {
+      console.log("Event page");
+      this.setState({ isDashboard: false });
     }
   };
 
@@ -90,6 +139,7 @@ class App extends Component {
           <FormPanel
             onLogin={this.onSubmitLogin}
             onRegister={this.onSubmitRegister}
+            onBack={this.onNavBack}
             isLogin={this.state.isLoginForm}
             isRegister={this.state.isRegisterForm}
           />
@@ -100,7 +150,20 @@ class App extends Component {
     return (
       <Auxiliary>
         <Toast />
-        {this.state.isLoginForm || this.state.isRegisterForm ? (
+        {this.state.isDashboard ? (
+          <Dashboard user={this.state.user} onpage={this.onPageChange} islogout={this.onLogout}/>
+        ) : this.state.isLoginForm || this.state.isRegisterForm ? (
+          form
+        ) : (
+          <EventLayout
+            onpage={this.onPageChange}
+            loginNavHandler={this.onLoginPageHandler}
+            user={this.state.user}
+            isAuthenticated={this.state.isAuthenticated}
+            islogout={this.onLogout}
+          />
+        )}
+        {/* {this.state.isLoginForm || this.state.isRegisterForm ? (
           form
         ) : (
           <EventLayout
@@ -109,7 +172,8 @@ class App extends Component {
             isAuthenticated={this.state.isAuthenticated}
             islogout={this.onLogout}
           />
-        )}
+        )} */}
+        {/* <Dashboard /> */}
       </Auxiliary>
     );
   }

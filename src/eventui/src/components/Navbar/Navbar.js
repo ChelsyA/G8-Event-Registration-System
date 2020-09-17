@@ -1,7 +1,7 @@
 import React from "react";
 import Auxiliary from "../../hoc/Auxiliary";
 import axios from "axios";
-import { DJ_AUTH_URL } from "../../store/constants";
+import { DJ_AUTH_URL, DURL } from "../../store/constants";
 
 const Navbar = (props) => {
   const navLink = (isLoginSelected) => {
@@ -10,26 +10,26 @@ const Navbar = (props) => {
 
   const logout = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    const csrftoken = document.cookie;
     const config = {
       method: "post",
       url: `${DJ_AUTH_URL}logout/`,
       headers: {
-        'Authorization': `Token ${user.token}`,
-        // 'Cookie': csrftoken,
+        'Authorization': `Bearer ${user.token}`,
       },
     };
 
     axios(config)
       .then((res) => {
-        if (res.data.status === 200) {
+        if (res.status === 200) {
           localStorage.removeItem("user");
           props.onlogout(true);
+          window.location.href = DURL
         }
       })
       .catch((err) => {
         localStorage.removeItem("user");
         props.onlogout(true);
+        window.location.href = DURL
         return;
       });
   };
@@ -40,12 +40,12 @@ const Navbar = (props) => {
         {props.user !== null ? props.user.username : "Welcome"}
       </a>
       <div className="dropdown-menu dropdown-menu-right">
-        <a href="#/" className="dropdown-item">
+        <a href="#/" className="dropdown-item" onClick={() => props.onpage(true)}>
           Profile
         </a>
-        <a href="#/" className="dropdown-item">
+        {/* <a href="#/" className="dropdown-item">
           Events
-        </a>
+        </a> */}
         <div className="dropdown-divider"></div>
         <a href="#/" className="dropdown-item" onClick={logout}>
           Logout
