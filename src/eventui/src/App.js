@@ -8,7 +8,7 @@ import Auxiliary from "./hoc/Auxiliary";
 import FormPanel from "./components/Form/Form";
 import EventLayout from "./components/Events/EventLayout";
 import { isExpired, getUser } from "./components/Helper/utils";
-import Dashboard from "./components/Admin/Dashboard";
+import Dashboard from "./components/Admins/Dashboard";
 import { EVENTAPP_URL } from './store/constants';
 
 class App extends Component {
