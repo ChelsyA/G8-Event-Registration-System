@@ -23,7 +23,7 @@ const EventRegistration = (props) => {
     axios(config)
     .then(res => {
       setIsLoading(false);
-      if(res.data.status_code == 700) {
+      if(res.data.status_code === 700) {
         notify(
           res.data.result,
           "error",

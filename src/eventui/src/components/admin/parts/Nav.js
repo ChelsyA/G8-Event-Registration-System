@@ -4,9 +4,9 @@ import Auxiliary from "../../../hoc/Auxiliary";
 const Nav = (props) => {
   return (
     <Auxiliary>
-      <nav className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+      <nav className="navbar navbar-dark sticky-top event-color flex-md-nowrap p-0 shadow">
         <a className="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#/">
-          Company name
+          OctaVents
         </a>
         <button
           className="navbar-toggler position-absolute d-md-none collapsed"
@@ -19,12 +19,6 @@ const Nav = (props) => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <input
-          className="form-control form-control-dark w-100"
-          type="text"
-          placeholder="Search"
-          aria-label="Search"
-        />
         <ul className="navbar-nav px-3">
           <li className="nav-item text-nowrap">
             <a className="nav-link" href="#/">

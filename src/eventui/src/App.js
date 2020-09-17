@@ -7,7 +7,7 @@ import Auxiliary from "./hoc/Auxiliary";
 import FormPanel from "./components/Form/Form";
 import EventLayout from "./components/Events/EventLayout";
 import { isExpired, getUser } from "./components/Helper/utils";
-import Dashboard from './components/admin/Dashboard';
+import Dashboard from './components/Admin/Dashboard';
 
 class App extends Component {
   state = {
@@ -114,7 +114,7 @@ class App extends Component {
     return (
       <Auxiliary>
         <Toast />
-        {this.state.isLoginForm || this.state.isRegisterForm ? (
+        {/* {this.state.isLoginForm || this.state.isRegisterForm ? (
           form
         ) : (
           <EventLayout
@@ -123,8 +123,8 @@ class App extends Component {
             isAuthenticated={this.state.isAuthenticated}
             islogout={this.onLogout}
           />
-        )}
-        {/* <Dashboard /> */}
+        )} */}
+        <Dashboard />
       </Auxiliary>
     );
   }
