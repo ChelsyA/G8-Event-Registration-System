@@ -8,6 +8,7 @@ from eventapp.views import (add_user_to_event, eventbookings,
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('eventapp.api.urls', namespace="eventapp")),
     path('test/<int:eid>/', test),
     path('userbookings/<int:id>/', userbookings, name="userbookings"),
     path('eventbookings/<int:id>/', eventbookings, name="eventbookings"),
@@ -17,6 +18,5 @@ urlpatterns = [
          remove_user_from_event, name="remove_user_from_event"),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
-    path('api/', include('eventapp.api.urls', namespace="eventapp")),
     path('', TemplateView.as_view(template_name='index.html'))
 ]
