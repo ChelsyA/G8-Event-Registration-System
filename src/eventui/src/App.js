@@ -36,8 +36,7 @@ class App extends Component {
   }
 
   getUser() {
-    const user = getUser();
-    // console.log(user)
+    const user = JSON.parse(localStorage.getItem("user"));
     if (user !== null) {
       axios.get(`${EVENTAPP_URL}user/${user.pk}/`).then(res => {
         this.setState({ user: res.data});
@@ -54,7 +53,7 @@ class App extends Component {
       this.setState({
         isAuthenticated: true,
         isLoginForm: !result,
-        user: result,
+        // user: result,
         isRegisterForm: !result,
       });
       this.getUser();
