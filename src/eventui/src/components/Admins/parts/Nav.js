@@ -1,32 +1,34 @@
 import React from "react";
 import Auxiliary from "../../../hoc/Auxiliary";
 import axios from "axios";
-import { DJ_AUTH_URL } from "../../../store/constants";
+import { DEFAULT_URL, DURL } from "../../../store/constants";
 
 const Nav = (props) => {
   const logout = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    const config = {
+
+    var config = {
       method: "post",
-      url: `${DJ_AUTH_URL}logout/`,
+      url: DEFAULT_URL + "logout/",
       headers: {
-        Authorization: `Bearer ${user.token}`,
+        Authorization:
+          "Token " + user.token,
       },
     };
 
     axios(config)
-      .then((res) => {
-        if (res.status === 200) {
-          localStorage.removeItem("user");
-          props.onlogout(true);
-        }
-      })
-      .catch((err) => {
+      .then((_) => {
         localStorage.removeItem("user");
         props.onlogout(true);
-        return;
+        window.location.href = DURL
+      })
+      .catch((_) => {
+        localStorage.removeItem("user");
+        props.onlogout(true);
+        window.location.href = DURL
       });
   };
+
 
   return (
     <Auxiliary>

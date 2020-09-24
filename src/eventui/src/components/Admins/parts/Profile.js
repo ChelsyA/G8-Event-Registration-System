@@ -6,7 +6,7 @@ const Profile = (props) => {
   return (
     <Auxiliary>
       <div className="card" style={{width: "18rem"}}>
-        <img src={faker.image.avatar()} className="card-img-top" alt="Profile image" />
+        <img src={faker.image.avatar()} className="card-img-top" alt="Profile" />
         <div className="card-body">
           <h5 className="card-title">Card title</h5>
           <p className="card-text">

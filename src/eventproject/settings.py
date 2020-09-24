@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'dj_rest_auth',
     'rest_framework',
-    'rest_framework.authtoken',
+    'knox',
+    # 'rest_framework.authtoken',
     'corsheaders',
     'eventapp',
 ]
@@ -147,13 +148,14 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'eventui/build/static'),)
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 AUTH_USER_MODEL = 'eventapp.User'
-REST_USE_JWT = True
+# REST_USE_JWT = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication', 
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'knox.auth.TokenAuthentication'
+        # 'rest_framework.authentication.TokenAuthentication', 
+        # 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
     ],
 }
 
@@ -174,3 +176,10 @@ EMAIL_HOST_USER = '509df0ba6cee60'
 EMAIL_HOST_PASSWORD = 'd6a68c17c25985'
 EMAIL_PORT = '2525'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.mailtrap.io'
+# EMAIL_HOST_USER = '628229254fe4ba'
+# EMAIL_HOST_PASSWORD = 'd9cdf8c85a0d55'
+# EMAIL_PORT = '2525'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

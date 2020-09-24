@@ -4,19 +4,19 @@ import DataTable from "react-data-table-component";
 
 const Button = (props) => (
   <div className="btn-group" role="group" aria-label="Action button group">
-    <button
+    {/* <button
       type="button"
       name="View"
       className="btn btn-info btn-sm"
       onClick={() => alert(props.event.title)}
     >
       <i className="fas fa-eye"></i>
-    </button>
+    </button> */}
     <button
       type="button"
       name="Delete"
       className="btn btn-danger btn-sm"
-      onClick={() => alert(props.event.title)}
+      onClick={() => alert(props.event.id)}
     >
       <i className="fas fa-trash"></i>
     </button>
@@ -64,11 +64,11 @@ const Events = (props) => {
       selector: "attendees",
       sortable: true,
     },
-    // {
-    //   name: "Actions",
-    //   button: true,
-    //   cell: (row) => <Button event={row} />,
-    // },
+    {
+      name: "Actions",
+      button: true,
+      cell: (row) => <Button event={row} />,
+    },
   ];
   return (
     <Auxiliary>

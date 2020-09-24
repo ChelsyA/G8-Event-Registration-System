@@ -6,6 +6,21 @@ from datetime import datetime
 from eventapp.models import Event, TokenCode, User, EventBooking
 from rest_framework.response import Response
 from rest_framework import status
+from django.contrib.auth import login
+
+from rest_framework import permissions
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from knox.views import LoginView as KnoxLoginView
+
+class LoginView(KnoxLoginView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = AuthTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        return super(LoginView, self).post(request, format=None)
 
 
 def test(request, eid):
@@ -15,6 +30,7 @@ def test(request, eid):
         return JsonResponse({'error': 'Sorry, room is alreay full'})
     return JsonResponse({'length': int(length)})
 
+
 def lengthEventBooking(eid):
     books = EventBooking.objects.filter(event_id__exact=eid)
     count = 0
@@ -23,6 +39,7 @@ def lengthEventBooking(eid):
     for book in books:
         count += 1
     return count
+
 
 def user_book_history(request, id):
     books = EventBooking.objects.all().filter(user_id__exact=id)

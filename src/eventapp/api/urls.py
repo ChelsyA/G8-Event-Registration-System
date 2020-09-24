@@ -20,5 +20,5 @@ urlpatterns = [
     path('users/', users, name="users"),
     path('event-book/', event_booking_view, name="event-book"),
     path('event-book/<int:pk>/', event_booking_view, name="event-book"),
-    path('user/<int:pk>/', user_view, name="user-detail"),
+    path('user/<str:username>/', user_view, name="user-detail"),
 ]

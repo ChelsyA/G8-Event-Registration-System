@@ -4,8 +4,8 @@ import { Toast, notify } from "../../Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Auxiliary from "../../../hoc/Auxiliary";
-import * as consts from "../../../store/constants";
-import {registerDetail} from "../../../store/details";
+import { EVENTAPP_URL } from "../../../store/constants";
+import { registerDetail } from "../../../store/details";
 import { feedback } from "../../Helper/utils";
 
 const Register = (props) => {
@@ -33,10 +33,42 @@ const Register = (props) => {
       feedback("email", false, "Invaild email! Please enter a valid email.");
       return;
     }
-    if (!matchPassword(userDetail.password, userDetail.password2)) {
-      notify("Both password must match and be at least 7 characters", "error");
-      feedback("password", false);
-      feedback("password2", false);
+
+    const password = userDetail.password;
+    const password2 = userDetail.password2;
+    const username = userDetail.username;
+    const first_name = userDetail.first_name;
+    const last_name = userDetail.last_name;
+    const email = userDetail.email;
+
+    if (!checkPassword({ password: password, password2: password2 })) {
+      feedback("password", false, "Re-enter password?");
+      feedback(
+        "password2",
+        false,
+        "Both password must match and be at least 7 to 15 characters which contain at one lowercase letter, one uppercase letter, one numeric digit, and one special character (eg @#%, etc)"
+      );
+      return;
+    }
+
+    if (isContain(password, username)) {
+      feedback("password", false, "Re-enter password?");
+      feedback("password2", false, "Password must not contain username!");
+      return;
+    }
+    if (isContain(password, first_name)) {
+      feedback("password", false, "Re-enter password?");
+      feedback("password2", false, "Password must not contain first name!");
+      return;
+    }
+    if (isContain(password, last_name)) {
+      feedback("password", false, "Re-enter password?");
+      feedback("password2", false, "Password must not contain last name!");
+      return;
+    }
+    if (isContain(password, email)) {
+      feedback("password", false, "Re-enter password?");
+      feedback("password2", false, "Password must not contain email!");
       return;
     }
 
@@ -49,15 +81,32 @@ const Register = (props) => {
     } else {
       if (isValid) {
         setIsLoading(true);
-        axios
-          .post(`${consts.EVENTAPP_URL}register/`, userDetail)
+        var FormData = require("form-data");
+        var data = new FormData();
+        data.append("username", userDetail.username);
+        data.append("password", userDetail.password);
+        data.append("password2", userDetail.password2);
+        data.append("email", userDetail.email);
+        data.append("first_name", userDetail.first_name);
+        data.append("last_name", userDetail.last_name);
+        data.append("city", userDetail.city);
+        data.append("address", userDetail.address);
+
+        var config = {
+          method: "post",
+          url: EVENTAPP_URL + "register/",
+          data: data,
+        };
+
+        axios(config)
           .then((res) => {
             setIsLoading(false);
             if (res.status === 201) {
               props.submitRegister(res.data);
             }
           })
-          .catch((err) => {
+          .catch((error) => {
+            console.log(error);
             setIsLoading(false);
             notify(
               "Oops something go wrong! Please check to ensure all required fields are entered",
@@ -86,8 +135,29 @@ const Register = (props) => {
     });
   };
 
-  const matchPassword = (p1, p2) =>
-    p1 === p2 && p1.length >= 6 && p2.length >= 6;
+  const checkPassword = (passes) => {
+    const password = passes.password;
+    const password2 = passes.password2;
+    var patt = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{7,15}$/;
+    if (
+      password.match(patt) &&
+      password2.match(patt) &&
+      password === password2
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const isContain = (str1, str2) => {
+    const nn1 = str2.slice(0, 3);
+    var n = str1.includes(nn1);
+    return n;
+  };
+
+  // const matchPassword = (p1, p2) =>
+  //   p1 === p2 && p1.length >= 6 && p2.length >= 6;
 
   const isChecked = (event) => {
     event.persist();

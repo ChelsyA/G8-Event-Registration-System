@@ -29,15 +29,30 @@ const EventRegistration = (props) => {
           "error",
           "top-center"
         );
-      }else {
+        return;
+      }
+      else if (res.data.status_code === 670) {
+        notify(
+          res.data.result,
+          "error",
+          "top-center"
+        );
+        return;
+      }
+      else {
         notify(
           "Booked successfully",
           "success",
           "top-center"
         );
+        book.user_id = null;
+        book.event_id = null;
+        book.ticket = 0;
+        book.phone_number = null;
       }
     })
     .catch(err => {
+      setIsLoading(false);
       console.log(err);
     });
   };

@@ -30,9 +30,9 @@ class Dashboard extends Component {
   }
 
   getBooks() {
-    if (!this.props.user.is_superuser) {
+    if (this.props.user.is_superuser) {
       axios
-        .get(`${EVENTAPP_URL}event-book/${this.props.user.pk}`)
+        .get(`${EVENTAPP_URL}event-book/${this.props.user.pk}/`)
         .then((res) => {
           console.log(res.data);
           this.setState({ eventbooks: res.data });

@@ -15,7 +15,8 @@ class EventLayout extends Component {
   state = {
     events: [],
     event: null,
-    user: null
+    user: null,
+    show: false,
   };
 
   componentDidMount() {
@@ -59,6 +60,13 @@ class EventLayout extends Component {
       event: event
     });
   };
+
+  onShow = () => {
+    this.setState({
+      ...this.state,
+      show: false,
+    })
+  }
 
   render() {
     const eventLists = this.state.events.map((event, i) => (
@@ -104,8 +112,8 @@ class EventLayout extends Component {
         </main>
 
         <Footer />
-        <Modal event={this.state.event}>
-          <EventRegistration isAuth={this.props.isAuthenticated} user={this.props.user} event={this.state.event} />
+        <Modal event={this.state.event} onShow={this.onShow}>
+          <EventRegistration isShow={this.state.show} isAuth={this.props.isAuthenticated} user={this.props.user} event={this.state.event} />
         </Modal>
       </Auxiliary>
     );

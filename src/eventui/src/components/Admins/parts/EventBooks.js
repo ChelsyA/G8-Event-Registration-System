@@ -2,6 +2,19 @@ import React from "react";
 import Auxiliary from "../../../hoc/Auxiliary";
 import DataTable from "react-data-table-component";
 
+const Button = (props) => (
+  <div className="btn-group" role="group" aria-label="Action button group">
+    <button
+      type="button"
+      name="Delete"
+      className="btn btn-danger btn-sm"
+      onClick={() => alert(props.book.book_id)}
+    >
+      Cancel
+    </button>
+  </div>
+);
+
 const EventBookings = (props) => {
   let books = props.books === null ? [] : props.books;
   const [pending, setPending] = React.useState(true);
@@ -37,6 +50,11 @@ const EventBookings = (props) => {
       name: "Tagline",
       selector: "event_tagline",
       sortable: true,
+    },
+    {
+      name: "Actions",
+      button: true,
+      cell: (row) => <Button book={row} />,
     },
   ];
   return (

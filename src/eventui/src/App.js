@@ -25,10 +25,6 @@ class App extends Component {
     this.getUser();
   }
 
-  // componentDidUpdate() {
-  //   this.getUser();
-  // }
-
   init() {
     isExpired()
       ? this.setState({ isAuthenticated: false })
@@ -38,7 +34,7 @@ class App extends Component {
   getUser() {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user !== null) {
-      axios.get(`${EVENTAPP_URL}user/${user.pk}/`).then(res => {
+      axios.get(`${EVENTAPP_URL}user/${user.username}/`).then(res => {
         this.setState({ user: res.data});
       })
     }

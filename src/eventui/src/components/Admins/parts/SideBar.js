@@ -25,13 +25,18 @@ const SideBar = (props) => {
                 </a>
               </li>
             ) : null}
-            {!props.is_superuser ? (
+            {/* {!props.is_superuser ? (
               <li className="nav-item">
                 <a className="nav-link" href="#" onClick={() => props.onSwitch("ebooks")}>
                   <i className="fas fa-book-open"></i> Your Book Events
                 </a>
               </li>
-            ) : null}
+            ) : null} */}
+            <li className="nav-item">
+              <a className="nav-link" href="#" onClick={() => props.onSwitch("ebooks")}>
+                <i className="fas fa-book-open"></i> Your Book Events
+              </a>
+            </li>
             <li className="nav-item">
               <a className="nav-link" href="#" onClick={() => props.onSwitch("profile")}>
                 <i className="fas fa-user"></i> Profile

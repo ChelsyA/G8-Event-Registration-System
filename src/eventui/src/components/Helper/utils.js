@@ -14,8 +14,8 @@ export const isExpired = () => {
     const nowDate = new Date();
     const mNowDate = moment(nowDate);
     const mExpectedDate = moment(expire);
-    
-    return mExpectedDate.diff(mNowDate, "days") === 0;
+    console.log(mExpectedDate.diff(mNowDate))
+    return mExpectedDate.diff(mNowDate) === 0;
 }
 
 export const count = (num) => {
@@ -37,7 +37,7 @@ export const feedback = (id, passed, text="") => {
       feedbackId
         .classList.remove("is-invisible");
       if (text !== "") {
-        feedbackId.text = "text";
+        feedbackId.innerText = text;
       }
     } else {
       fieldId.classList.remove("is-invalid");

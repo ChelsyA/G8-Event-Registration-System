@@ -3,16 +3,17 @@ import Auxiliary from "../../../hoc/Auxiliary";
 import axios from "axios";
 import { Toast, notify } from "../../Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
-import * as consts from "../../../store/constants";
-import {loginDetail} from "../../../store/details";
+import { DEFAULT_URL, DURL } from "../../../store/constants";
+import { loginDetail } from "../../../store/details";
 import { feedback } from "../../Helper/utils";
 
 const Login = (props) => {
   let isValid = false;
   let isSubmit = false;
-  let data = {
-    ...loginDetail,
-  };
+  const [user, setUser] = useState({...loginDetail})
+  // let data = {
+  //   ...loginDetail,
+  // };
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,22 +24,30 @@ const Login = (props) => {
     validate(["username", "password"]);
     if (isValid) {
       setIsLoading(true);
-      axios
-        .post(`${consts.DJ_AUTH_URL}login/`, data)
-        .then((res) => {
+      var FormData = require("form-data");
+      var data = new FormData();
+      data.append("username", user.username);
+      data.append("password", user.password);
+
+      var config = {
+        method: "post",
+        url: DEFAULT_URL + "login/",
+        data: data,
+      };
+
+      axios(config)
+        .then(function (response) {
           setIsLoading(false);
-          if (res.status === 200) {
-            const user = {
-              token: res.data.access_token,
-              ...res.data.user,
-              expireDate: new Date(new Date().getTime() + 3600 * 100000),
-            };
-            props.submitLogin(user);
-            localStorage.setItem("user", JSON.stringify(user));
-            window.location.href = consts.DURL
+          console.log(JSON.stringify(response.data));
+          const userDetail = {
+            username: user.username,
+            expireDate: response.data.expiry,
+            token: response.data.token,
           }
+          localStorage.setItem("user", JSON.stringify(userDetail));
+          window.location.href = DURL
         })
-        .catch((err) => {
+        .catch(function (error) {
           setIsLoading(false);
           isSubmit = false;
           notify(
@@ -53,7 +62,7 @@ const Login = (props) => {
 
   const validate = (ids) => {
     ids.forEach((id) => {
-      if (data[id] === "") {
+      if (user[id] === "") {
         isValid = false;
         isSubmit = false;
         if (!isSubmit) {
@@ -70,7 +79,7 @@ const Login = (props) => {
     event.persist();
     event.preventDefault();
     const { id, value } = event.target;
-    data[id] = value;
+    user[id] = value;
   };
 
   return (

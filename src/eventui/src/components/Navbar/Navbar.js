@@ -1,7 +1,7 @@
 import React from "react";
 import Auxiliary from "../../hoc/Auxiliary";
 import axios from "axios";
-import { DJ_AUTH_URL, DURL } from "../../store/constants";
+import { DEFAULT_URL, DURL } from "../../store/constants";
 
 const Navbar = (props) => {
   const navLink = (isLoginSelected) => {
@@ -10,27 +10,26 @@ const Navbar = (props) => {
 
   const logout = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    const config = {
+
+    var config = {
       method: "post",
-      url: `${DJ_AUTH_URL}logout/`,
+      url: DEFAULT_URL + "logout/",
       headers: {
-        'Authorization': `Bearer ${user.token}`,
+        Authorization:
+          "Token " + user.token,
       },
     };
 
     axios(config)
-      .then((res) => {
-        if (res.status === 200) {
-          localStorage.removeItem("user");
-          props.onlogout(true);
-          window.location.href = DURL
-        }
-      })
-      .catch((err) => {
+      .then((_) => {
         localStorage.removeItem("user");
         props.onlogout(true);
         window.location.href = DURL
-        return;
+      })
+      .catch((_) => {
+        localStorage.removeItem("user");
+        props.onlogout(true);
+        window.location.href = DURL
       });
   };
 
@@ -40,7 +39,11 @@ const Navbar = (props) => {
         {props.user !== null ? props.user.username : "Welcome"}
       </a>
       <div className="dropdown-menu dropdown-menu-right">
-        <a href="#/" className="dropdown-item" onClick={() => props.onpage(true)}>
+        <a
+          href="#/"
+          className="dropdown-item"
+          onClick={() => props.onpage(true)}
+        >
           Profile
         </a>
         {/* <a href="#/" className="dropdown-item">
@@ -77,9 +80,7 @@ const Navbar = (props) => {
             <ul className="navbar-nav ml-auto">
               {!props.is_auth ? (
                 <li className="nav-item" onClick={() => navLink("Login")}>
-                  <button className="btn btn-primary mb-2">
-                  Login
-                </button>
+                  <button className="btn btn-primary mb-2">Login</button>
                 </li>
               ) : (
                 dropdown()

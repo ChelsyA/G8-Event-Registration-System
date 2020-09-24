@@ -58,6 +58,19 @@ class Util:
             else:
                 return False
     
+    @staticmethod
+    def checkIfUserHasSameBook(books, uid):
+        listIds = []
+        if books is None:
+            return False
+        else:
+            for book in books:
+                listIds.append(book.user_id)
+            if uid in listIds:
+                return True
+            else:
+                return False
+    
     @staticmethod 
     def lengthEventBooking(eid):
         books = EventBooking.objects.filter(event_id__exact=eid)
