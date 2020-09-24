@@ -75,12 +75,12 @@ const Login = (props) => {
     });
   };
 
-  const onChangeHandler = (event) => {
-    event.persist();
-    event.preventDefault();
-    const { id, value } = event.target;
-    user[id] = value;
-  };
+  // const onChangeHandler = (event) => {
+  //   event.persist();
+  //   event.preventDefault();
+  //   const { id, value } = event.target;
+  //   user[id] = value;
+  // };
 
   return (
     <Auxiliary>
@@ -107,7 +107,8 @@ const Login = (props) => {
               id="username"
               aria-describedby="usernameHelp"
               placeholder="Username"
-              onChange={(event) => onChangeHandler(event)}
+              // onChange={(event) => onChangeHandler(event)}
+              onChange={(event) => setUser({...user, username: event.target.value})}
               required={true}
             />
             <div
@@ -126,7 +127,8 @@ const Login = (props) => {
               className="form-control inputBG"
               id="password"
               placeholder="Password"
-              onChange={(event) => onChangeHandler(event)}
+              // onChange={(event) => onChangeHandler(event)}
+              onChange={(event) => setUser({...user, password: event.target.value})}
               required
             />
             <div

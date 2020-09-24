@@ -1,27 +1,8 @@
 import React from "react";
+import axios from "axios";
 import Auxiliary from "../../../hoc/Auxiliary";
 import DataTable from "react-data-table-component";
-
-const Button = (props) => (
-  <div className="btn-group" role="group" aria-label="Action button group">
-    {/* <button
-      type="button"
-      name="View"
-      className="btn btn-info btn-sm"
-      onClick={() => alert(props.event.title)}
-    >
-      <i className="fas fa-eye"></i>
-    </button> */}
-    <button
-      type="button"
-      name="Delete"
-      className="btn btn-danger btn-sm"
-      onClick={() => alert(props.event.id)}
-    >
-      <i className="fas fa-trash"></i>
-    </button>
-  </div>
-);
+import { EVENTAPP_URL } from "../../../store/constants";
 
 const Events = (props) => {
   let events = props.events === null ? [] : props.events;
@@ -32,6 +13,50 @@ const Events = (props) => {
     }, 1000);
     return () => clearTimeout(timeout);
   }, []);
+
+  const Button = (props) => {
+    const delete_event = () => {
+      var FormData = require("form-data");
+      var data = new FormData();
+      data.append("event_id", props.event.id);
+
+      var config = {
+        method: "delete",
+        url: EVENTAPP_URL + "delete_event/",
+        data: data,
+      };
+
+      let delete_confirm = window.confirm("Are you sure to delete this event?");
+      events = events.filter(e => !props.event.id === e.id)
+      return
+      if (delete_confirm) {
+        axios(config)
+          .then((res) => {
+            if (res.status === 200) {
+              events = events.filter(e => !props.event.includes(e))
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    };
+
+    return (
+      <div className="btn-group" role="group" aria-label="Action button group">
+        <button
+          type="button"
+          name="Delete"
+          className="btn btn-danger btn-sm"
+          onClick={delete_event}
+        >
+          <i className="fas fa-trash"></i>
+        </button>
+      </div>
+    );
+  };
+
+  
 
   const columns = [
     {
@@ -67,7 +92,7 @@ const Events = (props) => {
     {
       name: "Actions",
       button: true,
-      cell: (row) => <Button event={row} />,
+      cell: (row) => <Button ondelete={props.onDelete} event={row} />,
     },
   ];
   return (

@@ -12,7 +12,7 @@ const SideBar = (props) => {
           <ul className="nav flex-column">
             {props.is_superuser ? (
               <li className="nav-item">
-              <a className="nav-link" href="#" onClick={() => props.onSwitch("")}>
+              <a className="nav-link" href="#/" onClick={() => props.onSwitch("")}>
                 <i className="fas fa-columns"></i> Dashboard
                 <span className="sr-only">(current)</span>
               </a>
@@ -20,25 +20,25 @@ const SideBar = (props) => {
             ) : null}
             {props.is_superuser ? (
               <li className="nav-item">
-                <a className="nav-link" href="#" onClick={() => props.onSwitch("users")}>
+                <a className="nav-link" href="#/" onClick={() => props.onSwitch("users")}>
                   <i className="fas fa-users"></i> Users
                 </a>
               </li>
             ) : null}
             {/* {!props.is_superuser ? (
               <li className="nav-item">
-                <a className="nav-link" href="#" onClick={() => props.onSwitch("ebooks")}>
+                <a className="nav-link" href="#/" onClick={() => props.onSwitch("ebooks")}>
                   <i className="fas fa-book-open"></i> Your Book Events
                 </a>
               </li>
             ) : null} */}
             <li className="nav-item">
-              <a className="nav-link" href="#" onClick={() => props.onSwitch("ebooks")}>
+              <a className="nav-link" href="#/" onClick={() => props.onSwitch("ebooks")}>
                 <i className="fas fa-book-open"></i> Your Book Events
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#" onClick={() => props.onSwitch("profile")}>
+              <a className="nav-link" href="#/" onClick={() => props.onSwitch("profile")}>
                 <i className="fas fa-user"></i> Profile
               </a>
             </li>

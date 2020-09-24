@@ -26,7 +26,7 @@ SECRET_KEY = 'flp$nseoz+ref6k_ftjhyneieeyo(i46)=%$+wyp6+cx%fiz#p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["13.92.253.200", "51.11.37.127", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["51.11.37.127",]
 
 
 # Application definition
@@ -58,12 +58,12 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://51.11.37.127",
-    "http://13.92.253.200",
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
+    "http://51.11.37.127"
+    # "http://13.92.253.200",
+    # "http://localhost:3000",
+    # "http://127.0.0.1:3000",
+    # "http://localhost:8000",
+    # "http://127.0.0.1:8000",
 ]
 
 PASSWORD_HASHERS = [

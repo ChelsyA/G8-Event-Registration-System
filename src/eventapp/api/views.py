@@ -21,6 +21,7 @@ class EventBookingView(viewsets.ModelViewSet):
     queryset = EventBooking.objects.all()
     serializer_class = EventBookingSerializer
 
+
 class RegisterView(generics.GenericAPIView):
 
     serializer_class = UserSerializer
@@ -67,10 +68,10 @@ class VerifyEmail(generics.GenericAPIView):
                     user.is_active = True
                     user.save()
         except User.DoesNotExist or Token.DoesNotExist:
-            return Response({'error': 'User does not exist or Token code is not valid'}, 
+            return Response({'error': 'User does not exist or Token code is not valid'},
                             status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response({'email': 'Successfully activated'}, 
+            return Response({'email': 'Successfully activated'},
                             status=status.HTTP_200_OK)
 
 
@@ -95,34 +96,27 @@ def event_booking_view(request, pk=None):
             timeLists = []
             for book in user_books:
                 timeLists.append(book.event.time)
-            # isConflict = False
-            # for t in timeLists:
-            #     if t == event.time:
-            #         isConflict = True
-            #         break
-            # return Response({
-            #     'isConflict': isConflict
-            # })
-            
-            if event.time in timeLists:
-                return Response({
-                    'result': f'Sorry, you can\'t book an event that conflicts with {event.time} time',
-                    'status_code': 670
-                })
-            
+
             if Util.checkIfUserHasBook(books, user.id):
                 return Response({
                     'result': "It seems you have booked the event already!",
                     'status_code': 700
                 })
-            else:
-                event.attendees.add(user)
-                book = EventBooking(user=user, event=event,
-                                    ticket=ticket, phone_number=phone_number)
-                book.save()
+
+            if event.time in timeLists:
                 return Response({
-                    'result': "Booked successfully",
-                }, status=status.HTTP_201_CREATED)
+                    'result': f'Sorry, you can\'t book an event that conflicts with {event.time} time',
+                    'status_code': 670,
+                    'time': event.time
+                })
+
+            event.attendees.add(user)
+            book = EventBooking(user=user, event=event,
+                                ticket=ticket, phone_number=phone_number)
+            book.save()
+            return Response({
+                'result': "Booked successfully",
+            }, status=status.HTTP_201_CREATED)
         except User.DoesNotExist:
             return Response({
                 'error': 'User does not exist',
@@ -150,23 +144,37 @@ def event_booking_view(request, pk=None):
                     'event_speaker': book.event.speaker,
                     'event_tagline': book.event.tagline,
                 })
-            # data.append({'length': count})
         except User.DoesNotExist:
             return Response({'error': 'User does not exist!'}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response(data)
 
     if request.method == 'DELETE':
+        user = None
+        event = None
+        book_id = request.data.get('book_id')
         try:
-            bid = request.data.get('book_id')
-            book = EventBooking.objects.get(id=bid)
+            book = EventBooking.objects.get(id=book_id)
+            event = Event.objects.get(id=book.event_id)
+            user = User.objects.get(id=book.user_id)
+            event.attendees.remove(user)
             book.delete()
+        except User.DoesNotExist:
+            return Response({
+                'error': 'User does not exist',
+            }, status=status.HTTP_204_NO_CONTENT)
+        except Event.DoesNotExist:
+            return Response({
+                'error': 'Event does not exist',
+            }, status=status.HTTP_204_NO_CONTENT)
         except EventBooking.DoesNotExist:
-            return Response({'error': 'Event you tried to remove is not found'},
-                            status=status.HTTP_404_NOT_FOUND)
+            return Response({
+                'error': 'Event booking does not exist',
+            }, status=status.HTTP_204_NO_CONTENT)
         else:
-            return Response({'result': 'Event has been removed'}, 
-                            status=status.HTTP_200_OK)       
+            return Response({
+                'is_success': True,
+            }, status=status.HTTP_200_OK)
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
@@ -186,7 +194,7 @@ def user_view(request, username):
             data['is_staff'] = user.is_staff
             data['pk'] = user.pk
         except User.DoesNotExist:
-            return Response({'error': 'User does not exist!'}, 
+            return Response({'error': 'User does not exist!'},
                             status=status.HTTP_404_NOT_FOUND)
         if user != None:
             return Response(data, status=status.HTTP_200_OK)
@@ -204,11 +212,11 @@ def user_view(request, username):
                 if request.data.get('password') == request.data.get('password2'):
                     user.set_password(request.data.get('password'))
                 else:
-                    return Response({'error': 'Password must match!'}, 
+                    return Response({'error': 'Password must match!'},
                                     status=status.HTTP_400_BAD_REQUEST,)
 
         except User.DoesNotExist:
-            return Response({'error': 'User does not exist!'}, 
+            return Response({'error': 'User does not exist!'},
                             status=status.HTTP_404_NOT_FOUND)
         if user != None:
             user.save()
@@ -234,21 +242,37 @@ def user_view(request, username):
                 'result': result
             })
 
+
 @api_view(['GET', ])
 def users(request):
     data = []
-    
+
     if request.method == "GET":
         users = User.objects.all()
         for user in users:
             data.append({
-                'username' : user.username,
-                'name' : user.first_name + " " + user.last_name,
-                'email' : user.email,
-                'address' : user.address,
-                'city' : user.city,
-                'is_staff' : user.is_staff,
-                'pk' : user.pk,
+                'username': user.username,
+                'name': user.first_name + " " + user.last_name,
+                'email': user.email,
+                'address': user.address,
+                'city': user.city,
+                'is_staff': user.is_staff,
+                'pk': user.pk,
             })
-        
+
         return Response(data, status=status.HTTP_200_OK)
+
+@api_view(['DELETE', ])
+def delete_event(request):
+    try:
+        event_id = request.data.get('event_id')
+        event = Event.objects.get(id=event_id)
+        event.delete()
+    except Event.DoesNotExist:
+        return Response({
+            'error': 'Event does not exist',
+        }, status=status.HTTP_204_NO_CONTENT)
+    else:
+        return Response({
+            'is_success': True,
+        }, status=status.HTTP_200_OK)

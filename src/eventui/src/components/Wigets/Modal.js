@@ -1,5 +1,5 @@
 import React from "react";
-import Auxiliary from "../../hoc/Auxiliary";
+import Auxiliary from "../../../hoc/Auxiliary";
 
 const Modal = (props) => {
   return (
@@ -31,7 +31,7 @@ const Modal = (props) => {
               </button>
             </div>
             <div className="modal-body mx-1">
-              {props.children}
+              
             </div>
           </div>
         </div>

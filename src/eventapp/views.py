@@ -12,6 +12,7 @@ from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
 
+
 class LoginView(KnoxLoginView):
     permission_classes = (permissions.AllowAny,)
 
@@ -23,12 +24,41 @@ class LoginView(KnoxLoginView):
         return super(LoginView, self).post(request, format=None)
 
 
-def test(request, eid):
-    length = lengthEventBooking(eid)
-    event = Event.objects.get(id=eid)
-    if int(event.room_capacity) <= int(length):
-        return JsonResponse({'error': 'Sorry, room is alreay full'})
-    return JsonResponse({'length': int(length)})
+def test(request, book_id):
+    user = None
+    event = None
+    try:
+        book = EventBooking.objects.get(id=book_id)
+        # return JsonResponse({
+        #     'id': book.id,
+        #     'user_id': book.user_id,
+        #     'event_id': book.event_id,
+        # })
+        event = Event.objects.get(id=book.event_id)
+        user = User.objects.get(id=book.user_id)
+        event.attendees.remove(user)
+        book.delete()
+        
+    except User.DoesNotExist:
+        return JsonResponse({
+            'error': 'User does not exist',
+            'status': 404
+        })
+    except Event.DoesNotExist:
+        return JsonResponse({
+            'error': 'Event does not exist',
+            'status': 404
+        })
+    except EventBooking.DoesNotExist:
+        return JsonResponse({
+            'error': 'Event booking does not exist',
+            'status': 404
+        })
+    else:
+        return JsonResponse({
+            'is_success': True,
+            'status': 200
+        })
 
 
 def lengthEventBooking(eid):
@@ -118,18 +148,40 @@ def add_user_to_event(request, ui, ei):
         })
 
 
-def remove_user_from_event(request, ui, ei):
+def remove_user_from_event(request, book_id):
     user = None
     event = None
     try:
-        event = Event.objects.get(id=ei)
-        user = User.objects.get(id=ui)
+        book = EventBooking.objects.get(id=book_id)
+        event = Event.objects.get(id=book.event_id)
+        user = User.objects.get(id=book.user_id)
         event.attendees.remove(user)
+        book.delete()
     except User.DoesNotExist:
         return JsonResponse({
             'error': 'User does not exist',
+            'status': 403
+        })
+    except Event.DoesNotExist:
+        return JsonResponse({
+            'error': 'Event does not exist',
             'status': 404
         })
+    except EventBooking.DoesNotExist:
+        return JsonResponse({
+            'error': 'Event booking does not exist',
+            'status': 405
+        })
+    else:
+        return JsonResponse({
+            'is_success': True,
+            'status': 200
+        })
+
+def delete_event(request, eid):
+    try:
+        event = Event.objects.get(id=eid)
+        event.delete()
     except Event.DoesNotExist:
         return JsonResponse({
             'error': 'Event does not exist',

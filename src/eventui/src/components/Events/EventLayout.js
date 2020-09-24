@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Toast, notify } from "../Helper/notify";
+// import { Toast, notify } from "../Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
 
@@ -7,8 +7,8 @@ import Footer from "./Event/Footer";
 import Event from "./Event/Event";
 import Navbar from "../Navbar/Navbar";
 import Auxiliary from "../../hoc/Auxiliary";
-import Modal from "../Wigets/Modal";
-import EventRegistration from "./Event/EventRegistration";
+import Modal from "./Event/Modal";
+// import EventRegistration from "./Event/EventRegistration";
 import  {EVENTAPP_URL}  from '../../store/constants';
 
 class EventLayout extends Component {
@@ -27,11 +27,11 @@ class EventLayout extends Component {
     this.getEvents();
   }
 
-  getUser() {
-    // http://127.0.0.1:8000/api/user/1/
-    const id = this.props.user.pk
+  // getUser() {
+  //   // http://127.0.0.1:8000/api/user/1/
+  //   const id = this.props.user.pk
     
-  }
+  // }
 
   getEvents () {
     axios.get(`${EVENTAPP_URL}events/`).then((res) => {
@@ -74,7 +74,7 @@ class EventLayout extends Component {
     ));
     return (
       <Auxiliary>
-        <Toast />
+        {/* <Toast /> */}
         <Navbar
           onpage={this.props.onpage}
           loginNavHandler={this.props.loginNavHandler}
@@ -112,9 +112,10 @@ class EventLayout extends Component {
         </main>
 
         <Footer />
-        <Modal event={this.state.event} onShow={this.onShow}>
+        <Modal event={this.state.event} onShow={this.onShow} isAuth={this.props.isAuthenticated} user={this.props.user}/>
+        {/* <Modal event={this.state.event} onShow={this.onShow}>
           <EventRegistration isShow={this.state.show} isAuth={this.props.isAuthenticated} user={this.props.user} event={this.state.event} />
-        </Modal>
+        </Modal> */}
       </Auxiliary>
     );
   }

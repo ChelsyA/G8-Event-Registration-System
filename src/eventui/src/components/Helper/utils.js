@@ -15,7 +15,7 @@ export const isExpired = () => {
     const mNowDate = moment(nowDate);
     const mExpectedDate = moment(expire);
     console.log(mExpectedDate.diff(mNowDate))
-    return mExpectedDate.diff(mNowDate) === 0;
+    return mExpectedDate.diff(mNowDate) <= 0;
 }
 
 export const count = (num) => {

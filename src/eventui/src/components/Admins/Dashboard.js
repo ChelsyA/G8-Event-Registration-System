@@ -71,6 +71,20 @@ class Dashboard extends Component {
     this.setState({ selectPage: select });
   }
 
+  onDeleteEvent(result) {
+    if (result.is_success)
+    {
+      this.getEvents()
+    }
+  }
+
+  onCancelBook(result) {
+    if (result.is_success)
+    {
+      this.getBooks();
+    }
+  }
+
   render() {
     return (
       <Auxiliary>
@@ -92,10 +106,10 @@ class Dashboard extends Component {
                 style={{ background: "white", borderTop: "5px solid #4B0314" }}
               >
                 {this.state.selectPage === "" ? (
-                  <Events events={this.state.events} />
+                  <Events onDelete={this.onDeleteEvent} events={this.state.events} />
                 ) : null}
                 {this.state.selectPage === "ebooks" ? (
-                  <EventBooks books={this.state.eventbooks} />
+                  <EventBooks onCancel={this.onCancelBook} books={this.state.eventbooks} />
                 ) : null}
                 {this.state.selectPage === "users" ? (
                   <Users users={this.state.users} />

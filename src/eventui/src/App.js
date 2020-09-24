@@ -7,7 +7,7 @@ import "./App.css";
 import Auxiliary from "./hoc/Auxiliary";
 import FormPanel from "./components/Form/Form";
 import EventLayout from "./components/Events/EventLayout";
-import { isExpired, getUser } from "./components/Helper/utils";
+import { isExpired } from "./components/Helper/utils";
 import Dashboard from "./components/Admins/Dashboard";
 import { EVENTAPP_URL } from './store/constants';
 
@@ -26,9 +26,17 @@ class App extends Component {
   }
 
   init() {
-    isExpired()
-      ? this.setState({ isAuthenticated: false })
-      : this.setState({ isAuthenticated: true });
+    // isExpired()
+    //   ? this.setState({ isAuthenticated: false })
+    //   : this.setState({ isAuthenticated: true });
+
+    if (isExpired()) {
+      localStorage.removeItem("user");
+      this.setState({ isAuthenticated: false });
+    }
+    else {
+      this.setState({ isAuthenticated: true });
+    }
   }
 
   getUser() {
