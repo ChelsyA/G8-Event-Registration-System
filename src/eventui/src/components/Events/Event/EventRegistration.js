@@ -106,7 +106,7 @@ const EventRegistration = (props) => {
         </div>
 
 
- <div className="form-group">
+        <div className="form-group">
           <label htmlFor="time">Event Time</label>
           <select id="time" className="form-control inputBG" 
             name="time"

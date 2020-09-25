@@ -85,6 +85,7 @@ def event_booking_view(request, pk=None):
             eid = request.data.get('event_id')
             ticket = request.data.get('ticket')
             phone_number = request.data.get('phone_number')
+            time = request.data.get('time')
 
             event = Event.objects.get(id=eid)
             user = User.objects.get(id=uid)
@@ -112,7 +113,7 @@ def event_booking_view(request, pk=None):
 
             event.attendees.add(user)
             book = EventBooking(user=user, event=event,
-                                ticket=ticket, phone_number=phone_number)
+                                ticket=ticket, phone_number=phone_number, time=time)
             book.save()
             return Response({
                 'result': "Booked successfully",

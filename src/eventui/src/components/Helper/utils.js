@@ -28,21 +28,27 @@ export const count = (num) => {
     return arr;
 }
 
-export const feedback = (id, passed, text="") => {
+export const feedback = (id, passed, text="", isEvent = false) => {
     const fieldId = document.getElementById(id);
     const feedbackId = document.getElementById(id + "_feedback");
-    if (!passed) {
-      fieldId.classList.add("is-invalid");
-      feedbackId.classList.add("is-visible");
-      feedbackId
-        .classList.remove("is-invisible");
-      if (text !== "") {
-        feedbackId.innerText = text;
-      }
-    } else {
+    if (isEvent) {
       fieldId.classList.remove("is-invalid");
       feedbackId.classList.add("is-invisible");
       feedbackId.classList.remove("is-visible");
+    } else {
+      if (!passed) {
+        fieldId.classList.add("is-invalid");
+        feedbackId.classList.add("is-visible");
+        feedbackId
+          .classList.remove("is-invisible");
+        if (text !== "") {
+          feedbackId.innerText = text;
+        }
+      } else {
+        fieldId.classList.remove("is-invalid");
+        feedbackId.classList.add("is-invisible");
+        feedbackId.classList.remove("is-visible");
+      }
     }
   };
 

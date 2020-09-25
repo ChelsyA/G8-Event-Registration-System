@@ -46,6 +46,12 @@ class EventBooking(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     ticket = models.IntegerField()
     phone_number = models.CharField(max_length=15, blank=True)
+    time_choice = (
+        ('Morning', 'Morning'),
+        ('Midmorning', 'Midmorning'),
+        ('Afternoon', 'Afternoon'),
+    )
+    time = models.CharField(max_length=30, blank=True, choices=time_choice)
 
     def __str__(self):
         return f"{self.user.username} - {self.event.title}"
