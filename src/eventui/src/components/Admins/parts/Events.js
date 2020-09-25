@@ -3,6 +3,10 @@ import axios from "axios";
 import Auxiliary from "../../../hoc/Auxiliary";
 import DataTable from "react-data-table-component";
 import { EVENTAPP_URL } from "../../../store/constants";
+import Cookies from 'js-cookie';
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 const Events = (props) => {
   let events = props.events === null ? [] : props.events;
@@ -19,16 +23,16 @@ const Events = (props) => {
       var FormData = require("form-data");
       var data = new FormData();
       data.append("event_id", props.event.id);
-
+      let csrftoken = Cookies.get('csrftoken');
       var config = {
         method: "delete",
         url: EVENTAPP_URL + "delete_event/",
+        headers: {'X-CSRFToken': csrftoken},
         data: data,
       };
 
       let delete_confirm = window.confirm("Are you sure to delete this event?");
-      events = events.filter(e => !props.event.id === e.id)
-      return
+      // events = events.filter(e => !props.event.id === e.id)
       if (delete_confirm) {
         axios(config)
           .then((res) => {

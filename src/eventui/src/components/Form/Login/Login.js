@@ -6,14 +6,16 @@ import "react-toastify/dist/ReactToastify.css";
 import { DEFAULT_URL, DURL } from "../../../store/constants";
 import { loginDetail } from "../../../store/details";
 import { feedback } from "../../Helper/utils";
+import Cookies from 'js-cookie';
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 const Login = (props) => {
+  let csrftoken = Cookies.get('csrftoken');
   let isValid = false;
   let isSubmit = false;
   const [user, setUser] = useState({...loginDetail})
-  // let data = {
-  //   ...loginDetail,
-  // };
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,6 +34,7 @@ const Login = (props) => {
       var config = {
         method: "post",
         url: DEFAULT_URL + "login/",
+        headers: {'X-CSRFToken': csrftoken},
         data: data,
       };
 

@@ -10,6 +10,10 @@ import EventLayout from "./components/Events/EventLayout";
 import { isExpired } from "./components/Helper/utils";
 import Dashboard from "./components/Admins/Dashboard";
 import { EVENTAPP_URL } from './store/constants';
+import Cookies from 'js-cookie';
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 class App extends Component {
   state = {
@@ -40,9 +44,10 @@ class App extends Component {
   }
 
   getUser() {
+    let csrftoken = Cookies.get('csrftoken');
     const user = JSON.parse(localStorage.getItem("user"));
     if (user !== null) {
-      axios.get(`${EVENTAPP_URL}user/${user.username}/`).then(res => {
+      axios.get(`${EVENTAPP_URL}user/${user.username}/`, {headers: {'X-CSRFToken': csrftoken}},).then(res => {
         this.setState({ user: res.data});
       })
     }

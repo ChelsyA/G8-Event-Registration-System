@@ -26,7 +26,7 @@ SECRET_KEY = 'flp$nseoz+ref6k_ftjhyneieeyo(i46)=%$+wyp6+cx%fiz#p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["51.11.37.127",]
+ALLOWED_HOSTS = ["51.11.37.127", "127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -57,13 +57,18 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_WHITELIST = ["51.11.37.127", "127.0.0.1:8000", "localhost:3000"]
+
+CSRF_TRUSTED_ORIGINS = ["51.11.37.127", "127.0.0.1:8000", "localhost:3000"]
+
 CORS_ALLOWED_ORIGINS = [
-    "http://51.11.37.127"
-    # "http://13.92.253.200",
-    # "http://localhost:3000",
-    # "http://127.0.0.1:3000",
-    # "http://localhost:8000",
-    # "http://127.0.0.1:8000",
+    "http://51.11.37.127",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
 ]
 
 PASSWORD_HASHERS = [

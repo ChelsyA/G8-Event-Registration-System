@@ -2,13 +2,19 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Toast, notify } from "../../Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
+import Cookies from 'js-cookie';
 
 import Auxiliary from "../../../hoc/Auxiliary";
 import { EVENTAPP_URL } from "../../../store/constants";
 import { registerDetail } from "../../../store/details";
 import { feedback } from "../../Helper/utils";
 
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
 const Register = (props) => {
+  let csrftoken = Cookies.get('csrftoken');
+  console.log(csrftoken)
   const [userDetail, setUserDetail] = useState({ ...registerDetail });
   let [isDisabled, setDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -95,6 +101,7 @@ const Register = (props) => {
         var config = {
           method: "post",
           url: EVENTAPP_URL + "register/",
+          headers: {'X-CSRFToken': csrftoken},
           data: data,
         };
 

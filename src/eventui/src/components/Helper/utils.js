@@ -45,3 +45,19 @@ export const feedback = (id, passed, text="") => {
       feedbackId.classList.remove("is-visible");
     }
   };
+
+export const getCookies = (name) => {
+  var cookies = {};
+  if (document.cookie && document.cookie !== '') {
+      document.cookie.split(';').forEach(function (c) {
+          var m = c.trim().match(/(\w+)=(.*)/);
+          if(m !== undefined) {
+              cookies[m[1]] = decodeURIComponent(m[2]);
+          }
+      });
+  }
+  if (name) {
+      return cookies[name]
+  }
+  return cookies;
+}

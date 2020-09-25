@@ -1,15 +1,17 @@
 import React, { Component } from "react";
-// import { Toast, notify } from "../Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 import Footer from "./Event/Footer";
 import Event from "./Event/Event";
 import Navbar from "../Navbar/Navbar";
 import Auxiliary from "../../hoc/Auxiliary";
 import Modal from "./Event/Modal";
-// import EventRegistration from "./Event/EventRegistration";
 import  {EVENTAPP_URL}  from '../../store/constants';
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 class EventLayout extends Component {
   state = {
@@ -27,14 +29,9 @@ class EventLayout extends Component {
     this.getEvents();
   }
 
-  // getUser() {
-  //   // http://127.0.0.1:8000/api/user/1/
-  //   const id = this.props.user.pk
-    
-  // }
-
   getEvents () {
-    axios.get(`${EVENTAPP_URL}events/`).then((res) => {
+    let csrftoken = Cookies.get('csrftoken');
+    axios.get(`${EVENTAPP_URL}events/`, {headers: {'X-CSRFToken': csrftoken}}).then((res) => {
       const data = res.data;
 
       const mapEvents = data.map((event) => {
@@ -93,14 +90,6 @@ class EventLayout extends Component {
                 tips and events. You can explore by location, what's popular,
                 our top picks, free stuff... you got this. Ready?
               </p>
-              {/* <p>
-                <a href="#" className="btn btn-primary my-2">
-                  Main call to action
-                </a>
-                <a href="#" className="btn btn-secondary my-2">
-                  Secondary action
-                </a>
-              </p> */}
             </div>
           </section>
 
@@ -113,9 +102,6 @@ class EventLayout extends Component {
 
         <Footer />
         <Modal event={this.state.event} onShow={this.onShow} isAuth={this.props.isAuthenticated} user={this.props.user}/>
-        {/* <Modal event={this.state.event} onShow={this.onShow}>
-          <EventRegistration isShow={this.state.show} isAuth={this.props.isAuthenticated} user={this.props.user} event={this.state.event} />
-        </Modal> */}
       </Auxiliary>
     );
   }

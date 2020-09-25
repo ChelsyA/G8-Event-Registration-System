@@ -2,8 +2,13 @@ import React from "react";
 import Auxiliary from "../../hoc/Auxiliary";
 import axios from "axios";
 import { DEFAULT_URL, DURL } from "../../store/constants";
+import Cookies from 'js-cookie';
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 const Navbar = (props) => {
+  let csrftoken = Cookies.get('csrftoken');
   const navLink = (isLoginSelected) => {
     props.loginNavHandler(isLoginSelected);
   };
@@ -17,6 +22,7 @@ const Navbar = (props) => {
       headers: {
         Authorization:
           "Token " + user.token,
+          'X-CSRFToken': csrftoken
       },
     };
 

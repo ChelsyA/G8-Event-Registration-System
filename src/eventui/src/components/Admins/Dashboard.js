@@ -9,6 +9,10 @@ import Events from "./parts/Events";
 import Profile from "./parts/Profile";
 import EventBooks from "./parts/EventBooks";
 import Users from "./parts/Users";
+import Cookies from 'js-cookie';
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 class Dashboard extends Component {
   state = {
@@ -30,9 +34,10 @@ class Dashboard extends Component {
   }
 
   getBooks() {
+    let csrftoken = Cookies.get('csrftoken');
     if (this.props.user.is_superuser) {
       axios
-        .get(`${EVENTAPP_URL}event-book/${this.props.user.pk}/`)
+        .get(`${EVENTAPP_URL}event-book/${this.props.user.pk}/`, {headers: {'X-CSRFToken': csrftoken}})
         .then((res) => {
           console.log(res.data);
           this.setState({ eventbooks: res.data });
@@ -41,7 +46,8 @@ class Dashboard extends Component {
   }
 
   getEvents() {
-    axios.get(`${EVENTAPP_URL}events/`).then((res) => {
+    let csrftoken = Cookies.get('csrftoken');
+    axios.get(`${EVENTAPP_URL}events/`, {headers: {'X-CSRFToken': csrftoken}}).then((res) => {
       const data = res.data;
 
       const mapEvents = data.map((event) => {
@@ -62,7 +68,8 @@ class Dashboard extends Component {
   }
 
   getUsers() {
-    axios.get(`${EVENTAPP_URL}users/`).then((res) => {
+    let csrftoken = Cookies.get('csrftoken');
+    axios.get(`${EVENTAPP_URL}users/`, {headers: {'X-CSRFToken': csrftoken}}).then((res) => {
       this.setState({ users: res.data });
     });
   }

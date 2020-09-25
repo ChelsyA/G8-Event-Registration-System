@@ -5,7 +5,13 @@ import { EVENTAPP_URL } from "../../../store/constants";
 import { Toast, notify } from "../../Helper/notify";
 import "react-toastify/dist/ReactToastify.css";
 
+import Cookies from 'js-cookie';
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
 const Modal = (props) => {
+  let csrftoken = Cookies.get('csrftoken');
   const [isLoading, setIsLoading] = useState(false);
   const [book, setBook] = useState({
     user_id: null,
@@ -21,6 +27,7 @@ const Modal = (props) => {
     var config = {
       method: "post",
       url: `${EVENTAPP_URL}event-book/`,
+      headers: {'X-CSRFToken': csrftoken},
       data: book,
     };
 
