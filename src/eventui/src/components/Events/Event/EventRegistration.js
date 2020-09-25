@@ -104,6 +104,21 @@ const EventRegistration = (props) => {
             onChange={(event) => onChangeHandler(event)}
           />
         </div>
+
+
+ <div className="form-group">
+          <label htmlFor="time">Event Time</label>
+          <select id="time" className="form-control inputBG" 
+            name="time"
+            onChange={(event) => onChangeHandler(event)}>
+            <option defaultValue>Select...</option>
+            <option>Morning </option>
+            <option>Mid-Morning</option>
+            <option>Afternoon</option>
+           
+          </select>
+        </div>
+
         <div className="form-group">
           <label htmlFor="ticket">Ticket Number</label>
           <select id="ticket" className="form-control inputBG" 
