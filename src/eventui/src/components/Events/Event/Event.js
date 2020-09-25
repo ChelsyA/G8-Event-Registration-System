@@ -24,7 +24,7 @@ export default Event = (props) => {
             </p>
             <p className="card-text">
               <strong>TIME: </strong>{" "}
-              {props.eventInfo !== null ? props.eventInfo.title : ""}
+              {props.eventInfo !== null ? props.eventInfo.time : ""}
             </p>
             <p className="card-text">
               <strong>ROOM CAPACITY: </strong>{" "}
