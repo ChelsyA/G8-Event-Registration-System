@@ -191,8 +191,8 @@ const Modal = (props) => {
                     }
                   >
                     <option defaultValue>Select...</option>
-                    <option>Morning </option>
-                    <option>Mid-Morning</option>
+                    <option>Morning</option>
+                    <option>Midmorning</option>
                     <option>Afternoon</option>
                   </select>
                   <div

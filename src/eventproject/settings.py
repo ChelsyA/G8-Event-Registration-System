@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'dj_rest_auth',
     'rest_framework',
     'knox',
-    # 'rest_framework.authtoken',
     'corsheaders',
     'eventapp',
 ]
@@ -153,14 +152,10 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'eventui/build/static'),)
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 AUTH_USER_MODEL = 'eventapp.User'
-# REST_USE_JWT = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'knox.auth.TokenAuthentication'
-        # 'rest_framework.authentication.TokenAuthentication', 
-        # 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema'
 }

@@ -16,7 +16,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('register/', RegisterView.as_view(), name="register"),
     path('verify-email/', VerifyEmail.as_view(), name="verify-email"),
-    path('user/', user_view, name="user"),
     path('users/', users, name="users"),
     path('event-book/', event_booking_view, name="event-book"),
     path('event-book/<int:pk>/', event_booking_view, name="event-book"),
