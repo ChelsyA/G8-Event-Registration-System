@@ -2,6 +2,7 @@ import React from "react";
 
 import Auxiliary from "../../../hoc/Auxiliary";
 
+// Event item 
 export default Event = (props) => {
   const room_capacity = () => parseInt(props.eventInfo.room_capacity) - props.eventInfo.attendees
   const getData = () => {
@@ -47,12 +48,6 @@ export default Event = (props) => {
                 >
                   {room_capacity() === 0 ? "Full" : "Book now"}
                 </button>
-                {/* <button
-                  type="button"
-                  className="btn btn-sm btn-info"
-                >
-                  View info
-                </button> */}
               </div>
               <small className="text-muted">
                 Room: {room_capacity()}{" "}

@@ -8,6 +8,8 @@ axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 const Nav = (props) => {
+
+  // Log out functionality
   const logout = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     let csrftoken = Cookies.get('csrftoken');

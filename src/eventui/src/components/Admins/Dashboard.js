@@ -26,13 +26,15 @@ class Dashboard extends Component {
   componentDidMount() {
     this.init();
   }
-
+  
+  // Initialize events, books and users
   init() {
     this.getEvents();
     this.getBooks();
     this.getUsers();
   }
 
+  // Retrieve all events booked by an authenticated user - User Book history
   getBooks() {
     let csrftoken = Cookies.get('csrftoken');
     if (this.props.user.is_superuser) {
@@ -45,6 +47,7 @@ class Dashboard extends Component {
     }
   }
 
+  // Retrieve all events for a superuser to view
   getEvents() {
     let csrftoken = Cookies.get('csrftoken');
     axios.get(`${EVENTAPP_URL}events/`, {headers: {'X-CSRFToken': csrftoken}}).then((res) => {
@@ -67,6 +70,7 @@ class Dashboard extends Component {
     });
   }
 
+  // Retrieve all users for a superuser only
   getUsers() {
     let csrftoken = Cookies.get('csrftoken');
     axios.get(`${EVENTAPP_URL}users/`, {headers: {'X-CSRFToken': csrftoken}}).then((res) => {
@@ -74,10 +78,12 @@ class Dashboard extends Component {
     });
   }
 
+  // Switch on click to change pages but bad practice though
   onSwitchPage(select = "") {
     this.setState({ selectPage: select });
   }
 
+  // Delete events operated by a superuser only
   onDeleteEvent(result) {
     if (result.is_success)
     {
@@ -85,6 +91,7 @@ class Dashboard extends Component {
     }
   }
 
+  // Authenticated user can cancel any booked events
   onCancelBook(result) {
     if (result.is_success)
     {

@@ -25,13 +25,6 @@ const SideBar = (props) => {
                 </a>
               </li>
             ) : null}
-            {/* {!props.is_superuser ? (
-              <li className="nav-item">
-                <a className="nav-link" href="#/" onClick={() => props.onSwitch("ebooks")}>
-                  <i className="fas fa-book-open"></i> Your Book Events
-                </a>
-              </li>
-            ) : null} */}
             <li className="nav-item">
               <a className="nav-link" href="#/" onClick={() => props.onSwitch("ebooks")}>
                 <i className="fas fa-book-open"></i> Your Book Events

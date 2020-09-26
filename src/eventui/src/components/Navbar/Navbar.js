@@ -13,6 +13,7 @@ const Navbar = (props) => {
     props.loginNavHandler(isLoginSelected);
   };
 
+  // Log out functionality
   const logout = () => {
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -52,9 +53,6 @@ const Navbar = (props) => {
         >
           Profile
         </a>
-        {/* <a href="#/" className="dropdown-item">
-          Events
-        </a> */}
         <div className="dropdown-divider"></div>
         <a href="#/" className="dropdown-item" onClick={logout}>
           Logout

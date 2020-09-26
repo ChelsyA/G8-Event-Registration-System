@@ -2,6 +2,8 @@ import React from "react";
 import Auxiliary from "../../../hoc/Auxiliary";
 import DataTable from "react-data-table-component";
 
+
+// User lists
 const Users = (props) => {
   let users = props.users === null ? [] : props.users;
   const [pending, setPending] = React.useState(true);

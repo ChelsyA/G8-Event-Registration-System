@@ -13,6 +13,7 @@ axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
 const Modal = (props) => {
   let csrftoken = Cookies.get("csrftoken");
+  const [isTimeAvailable, setIsTimeAvailable] = useState(true)
   const [isLoading, setIsLoading] = useState(false);
   const [book, setBook] = useState({
     user_id: null,
@@ -46,6 +47,7 @@ const Modal = (props) => {
           return;
         } else if (res.data.status_code === 670) {
           notify(res.data.result, "error", "top-center");
+          setIsTimeAvailable(false)
           return;
         } else {
           notify("Booked successfully", "success", "top-center");
@@ -91,13 +93,11 @@ const Modal = (props) => {
     });
   };
 
-  let timeX =
-    book.time === (props.event === null ? "" : props.event.time) ? (
+  let timeX = !isTimeAvailable ? (
       <span className="require float-right">Please change time</span>
     ) : null;
   
-  let isTimeAvailable = book.time === (props.event === null ? "" : props.event.time)
-  console.log(isTimeAvailable)
+  // let isTimeAvailable = book.time === (props.event === null ? "" : props.event.time)
 
   return (
     <Auxiliary>
@@ -232,7 +232,7 @@ const Modal = (props) => {
                   </div>
                 </div>
                 <button
-                  disabled={isTimeAvailable}
+                  disabled={!isTimeAvailable}
                   type="button"
                   onClick={(event) => submit(event)}
                   className="btn btn-color btn-block rounded-pill my-4"

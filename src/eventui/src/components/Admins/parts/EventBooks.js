@@ -4,6 +4,7 @@ import Auxiliary from "../../../hoc/Auxiliary";
 import DataTable from "react-data-table-component";
 import { EVENTAPP_URL } from '../../../store/constants';
 
+// For Canceling a booked event
 const Button = (props) => {
   const cancel_book = () => {
     var FormData = require("form-data");
@@ -38,6 +39,7 @@ const Button = (props) => {
   );
 };
 
+// Event booking lists
 const EventBookings = (props) => {
   let books = props.books === null ? [] : props.books;
   const [pending, setPending] = React.useState(true);

@@ -8,6 +8,7 @@ import Cookies from 'js-cookie';
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
+// Event lists
 const Events = (props) => {
   let events = props.events === null ? [] : props.events;
   const [pending, setPending] = React.useState(true);
@@ -18,6 +19,7 @@ const Events = (props) => {
     return () => clearTimeout(timeout);
   }, []);
 
+  // For deleting a selected event
   const Button = (props) => {
     const delete_event = () => {
       var FormData = require("form-data");
@@ -31,8 +33,8 @@ const Events = (props) => {
         data: data,
       };
 
+      // Confirm before deleting an event
       let delete_confirm = window.confirm("Are you sure to delete this event?");
-      // events = events.filter(e => !props.event.id === e.id)
       if (delete_confirm) {
         axios(config)
           .then((res) => {
@@ -59,8 +61,6 @@ const Events = (props) => {
       </div>
     );
   };
-
-  
 
   const columns = [
     {

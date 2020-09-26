@@ -22,6 +22,7 @@ const Register = (props) => {
   let isCheck = false;
   let isSubmit = false;
 
+  // Register functionality for creating a new user
   const submit = (event) => {
     isSubmit = true;
     event.persist();
@@ -125,8 +126,10 @@ const Register = (props) => {
     }
   };
 
+  // Check if a given email is valid or correct
   const emailValid = (e) => e.includes("@") && e.includes(".");
 
+  // For validating user entries and giving feedbacks
   const validate = (ids) => {
     ids.forEach((id) => {
       if (userDetail[id] === "") {
@@ -142,6 +145,8 @@ const Register = (props) => {
     });
   };
 
+  // Check to ensure both passwords are at least 7 character, 
+  // 1 symbols, 1 lowercase letter, 1 uppercase letter and 1 numeric digit
   const checkPassword = (passes) => {
     const password = passes.password;
     const password2 = passes.password2;
@@ -157,15 +162,14 @@ const Register = (props) => {
     }
   };
 
+  // For checking if either username, email, first name or last name (slice 3 characters from these entries) contains the password
   const isContain = (str1, str2) => {
     const nn1 = str2.slice(0, 3);
     var n = str1.includes(nn1);
     return n;
   };
 
-  // const matchPassword = (p1, p2) =>
-  //   p1 === p2 && p1.length >= 6 && p2.length >= 6;
-
+  // For ensuring that a user must agree to our terms 
   const isChecked = (event) => {
     event.persist();
     isCheck = event.target.checked;

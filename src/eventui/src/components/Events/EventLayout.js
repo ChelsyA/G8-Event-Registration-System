@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -25,10 +24,12 @@ class EventLayout extends Component {
     this.init();
   }
 
+  // Initialize event lists
   init() {
     this.getEvents();
   }
 
+  // Retrieve all events
   getEvents () {
     let csrftoken = Cookies.get('csrftoken');
     axios.get(`${EVENTAPP_URL}events/`, {headers: {'X-CSRFToken': csrftoken}}).then((res) => {
@@ -51,6 +52,7 @@ class EventLayout extends Component {
     });
   }
 
+  // For Loading event info into a event modal dialog (Event registration)
   loadEventInfo = (event) => {
     this.setState({
       ...this.state,
@@ -71,7 +73,6 @@ class EventLayout extends Component {
     ));
     return (
       <Auxiliary>
-        {/* <Toast /> */}
         <Navbar
           onpage={this.props.onpage}
           loginNavHandler={this.props.loginNavHandler}

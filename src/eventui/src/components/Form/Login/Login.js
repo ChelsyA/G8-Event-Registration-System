@@ -19,6 +19,7 @@ const Login = (props) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  // Login functionality
   const submit = (event) => {
     isSubmit = true;
     event.persist();
@@ -63,6 +64,7 @@ const Login = (props) => {
     }
   };
 
+  // For validating user entries and giving feedbacks
   const validate = (ids) => {
     ids.forEach((id) => {
       if (user[id] === "") {
@@ -77,13 +79,6 @@ const Login = (props) => {
       }
     });
   };
-
-  // const onChangeHandler = (event) => {
-  //   event.persist();
-  //   event.preventDefault();
-  //   const { id, value } = event.target;
-  //   user[id] = value;
-  // };
 
   return (
     <Auxiliary>
